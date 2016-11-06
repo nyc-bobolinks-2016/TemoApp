@@ -24,7 +24,6 @@ export default class Conversations extends Component {
       conversationList: [],
       page: 0,
       next: 0,
-      conversationList: ''
     }
   }
 
