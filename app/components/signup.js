@@ -54,8 +54,8 @@ export default class Signup extends Component {
 
  render() {
    return (
-     <View>
-     <Text style={{ fontSize: 50}}>
+     <View style={styles.container}>
+     <Text style={{ fontSize: 50,fontFamily: 'chalkduster'}}>
         Signup
        </Text>
        <Text style={{ fontSize: 20}}>
@@ -65,7 +65,7 @@ export default class Signup extends Component {
          placeholder="username"
          value={this.state.username}
          onChangeText={this.handleNewUsername.bind(this)} />
-         <Text style={{ fontSize: 20}}>
+         <Text style={{ fontSize: 20, color: "#03a9f4"}}>
           New password
          </Text>
        <TextInput style={{height: 40, borderWidth: 1}}
@@ -73,7 +73,7 @@ export default class Signup extends Component {
          value={this.state.password}
          onChangeText={this.handleNewPhone.bind(this)}  />
        <TouchableOpacity onPress={this.handleSignup.bind(this)}>
-        <Text style={{ fontSize: 20, color: "grey"}}>Create Acount</Text>
+        <Text style={{ fontSize: 20, color: "#03a9f4"}}>Create Acount</Text>
        </TouchableOpacity>
      </View>
    );
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#03a9f4',
   },
   welcome: {
     fontSize: 20,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   },
   instructions: {
     textAlign: 'center',
-    color: '#333333',
+    color: '#e0e0e0',
     marginBottom: 5,
   },
 });

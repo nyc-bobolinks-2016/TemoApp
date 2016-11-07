@@ -49,27 +49,27 @@ export default class Contacts extends Component {
   }
 
   render() {
-   return (
-     <View>
-     <ListView
-     dataSource={this.state.dataSource}
-     renderRow={(rowData) =>
-       <TouchableOpacity onPress={() => this.onContactPress()}>
-         <Text style={styles.container}>{rowData.familyName}</Text>
-       </TouchableOpacity>
-     }
-     />
-     <NavButton
-       onPress={this.navigate.bind(this)}
-       text='Back'
-       style={{ fontSize: 20, color: "grey"}}
-     />
-     <NavMenu
-     style={styles.container}
-     navigator={this.props.navigator}
-     />
-     </View>
-   );
+    return (
+   <View style={styles.container}>
+        
+        <View style={styles.listContainer}>
+          <ListView
+            enableEmptySections={true}
+            onEndReachedThreshold={PULLDOWN_DISTANCE}
+            dataSource={this.state.dataSource}
+            renderRow={(rowData) =>
+              <TouchableOpacity onPress={() => this.onContactPress(rowData)}>
+                <View style={styles.listItem}>
+                  <View style={styles.listInfo}>
+                    <Text style={styles.memberLabel}>{rowData.familyName}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            }
+          />
+        </View>
+      </View>
+      )
   }
 
 
@@ -103,20 +103,44 @@ export default class Contacts extends Component {
 
 
 const styles = StyleSheet.create({
-  container: {
+ container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'stretch',
+    backgroundColor: '#ffffff'
+  },
+  listContainer: {
+    top: 10,
+    flex: 11,
+    justifyContent: 'center',
+    alignItems: 'stretch'
+  },
+  listItem: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#f7f8fc',
+    borderBottomWidth: 0.5,
+    borderColor: '#D0DBE4',
+    padding: 5
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  listIcon: {
+    justifyContent: 'flex-start',
+    paddingLeft: 10,
+    paddingRight: 15
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  profileIcon: {
+    width: 30,
+    height: 30
   },
+  listInfo: {
+    flex: 1,
+    justifyContent: 'flex-start'
+  },
+  memberLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#60768b',
+  }
 });
