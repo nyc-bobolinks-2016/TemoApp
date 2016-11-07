@@ -2,19 +2,33 @@ import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, TextInput, View} from 'react-native';
 
 export default class Temo extends Component {
-
+  
 constructor() {
     super();
     this.state = {
       percentage: '',
-      message: ''
+      message: '',
+      full_word: false
     };
   }
 
+
+handleKey(e) {
+   if (e.nativeEvent.key == " ") {
+    this.setState({full_word: true})
+}
+else {
+  this.setState({full_word: false})
+}
+}
+
+
+
+
  handleChange(value) {
   this.setState({message: value})
-  console.log(this.state.message)
-  return fetch('https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment', {
+  if (this.state.full_word == true) {
+    return fetch('https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment', { 
     method: 'POST',
     body: JSON.stringify({
   "documents": [
@@ -30,24 +44,28 @@ constructor() {
  .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson.documents) {
-          console.log(responseJson.documents[0].score)
-        return responseJson.documents[0].score;
+        this.setState({ percentage: responseJson.documents[0].score})
       };
       })
       .catch((error) => {
         console.error(error);
       });
   }
+};
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.Temo}>
           Temo
         </Text>
+        <Text>
+        {Math.floor(this.state.percentage * 100)}%
+        </Text>
           <TextInput
           style={{height: 40}}
           placeholder="Get Sentiment"
           value={this.state.message}
+          onKeyPress={ this.handleKey.bind(this)}
           onChangeText={ this.handleChange.bind(this)} />
       </View>
     );
