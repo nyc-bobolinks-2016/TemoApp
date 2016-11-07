@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 const PULLDOWN_DISTANCE = 40;
-const sendbird = require('sendbird');
+import SendBird from 'sendbird'
 const ContactsList = require('react-native-contacts');
 import NavButton from './navButton';
 import NavMenu from './navMenu';
@@ -23,6 +23,7 @@ import NavMenu from './navMenu';
 export default class Contacts extends Component {
   constructor() {
     super();
+    sb = SendBird.getInstance();
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       dataSource: ds.cloneWithRows([]),
@@ -41,8 +42,41 @@ export default class Contacts extends Component {
       if(err && err.type === 'permissionDenied'){
 
       } else {
-        console.log(contacts)
-        this.setState({contactList: contacts})
+
+        for(var i = 0; i < contacts.length; i++ ) {
+          console.log(contacts[i].phoneNumbers[0].number)
+          fetch('https://temo-api.herokuapp.com/users/show', {
+            method: 'post',
+            headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
+            body: JSON.stringify({
+            phone: contacts[i].phoneNumbers[0].number,
+            })
+          })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            console.log(responseJson )
+            console.log(responseJson.status)
+
+          if (responseJson.created_at) {
+            console.log("hi")
+            console.log(this.state.contactList)
+            console.log("ho")
+            console.log(contacts[0])
+            console.log(contacts[1])
+            console.log(contacts[2])
+            console.log(contacts[3])
+            console.log(contacts[4])
+
+
+
+            this.setState({contactList: this.state.contactList.concat([contacts[i]]  )})
+            console.log(this.state.contactList)
+
+          } else {
+            "invalid phone number"
+          }
+          })
+        }
       }
       this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.contactList)})
     })
@@ -54,7 +88,7 @@ export default class Contacts extends Component {
      <ListView
      dataSource={this.state.dataSource}
      renderRow={(rowData) =>
-       <TouchableOpacity onPress={() => this.onContactPress()}>
+       <TouchableOpacity onPress={() => this.onContactPress(rowData.phoneNumbers[0].number)}>
          <Text style={styles.container}>{rowData.familyName}</Text>
        </TouchableOpacity>
      }
@@ -73,33 +107,45 @@ export default class Contacts extends Component {
   }
 
 
-  onContactPress(){
-    fetch('https://api.sendbird.com/v3/open_channels', {
-      method: 'POST',
-      body: JSON.stringify({
-    "documents": [
-      {
-          "cover_url": "",
-      }
-    ]
-    }),
-      headers: { 'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Api-Token': '0542663449a1134c749ea3db0c290967722e1e26'}
-    })
-    .then((response) => response.json())
-        .then((responseJson) => {
-          if (responseJson) {
-            console.log(responseJson)
-        };
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
+    onContactPress(usertwo_phone){
+      console.log("in there")
+
+      var _self = this
+      sb.OpenChannel.createChannel("rand", "", "", [sb.currentUser.userId], function (channel, error) {
+        console.log("in here")
+
+          if (error) {
+              console.error(error);
+              return;
+          }
+          channel.enter(function(response, error){
+            console.log("now here")
+              if (error) {
+                  console.error(error);
+                  return;
+              }
+              fetch('https://temo-api.herokuapp.com/conversations', {
+                method: 'post',
+                headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
+                body: JSON.stringify({
+                channel_url: channel,
+                user_one: sb.currentUser.nickname,
+                user_two: usertwo_phone,
+              })
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              if (responseJson) {
+                _self.props.navigator.push({name: 'chat', route: channel, usertwo: usertwo});
+              } else {
+                "invalid phone number"
+              }
+
+            })
+          });
+      });
+    }
   }
-
-
 
 
 const styles = StyleSheet.create({

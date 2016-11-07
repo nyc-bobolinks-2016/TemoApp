@@ -13,7 +13,9 @@ import Temo from './components/temo';
 import Contacts from './components/contacts';
 import Welcome from './components/welcome';
 import Conversations from './components/conversations';
-
+import Login from './components/login';
+import Signup from './components/signup';
+import Chat from './components/chat';
 
 
 export default class Main extends Component {
@@ -31,6 +33,15 @@ export default class Main extends Component {
       }
       if(route.name === 'welcome') {
         return <Welcome navigator={navigator} />
+      }
+      if(route.name === 'login') {
+        return <Login navigator={navigator} />
+      }
+      if(route.name === 'signup') {
+        return <Signup navigator={navigator} />
+      }
+      if(route.name === 'chat') {
+        return <Chat navigator={navigator} />
       }
     }
 

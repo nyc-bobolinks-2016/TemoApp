@@ -4,21 +4,27 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ListView,
   TouchableOpacity,
   TouchableHighlight,
   Dimensions,
 } from 'react-native';
 
 
-const sendbird = require('sendbird');
+import SendBird from 'sendbird'
+
 const windowSize = Dimensions.get('window');
 
 export default class Chat extends Component {
   constructor() {
     super();
+    sb = SendBird.getInstance();
+    self = this
+    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       message: '',
-      messageList: []
+      messageList: [],
+      dataSource: ds.cloneWithRows([]),
     }
   }
 
@@ -27,35 +33,44 @@ export default class Chat extends Component {
       name : routeName
     })
   }
-  
-componentWillMount() {
-  sendbird.events.obMessageRecieved = (obj) => {
-    this.setState({messageList: this.state.messageList.concat([obj])})
+
+  componentWillMount() {
+
   };
-  this.getMessage();
-};
 
-getMessages() {
-  sendbird.getMessagesLoadMore({
-    limit: 100,
-    successFunc: (data) => {
-      data.messages.reverse().forEach(function(msg, index){
-        if(sendbird.isMessage(msg.cmd)) {
-          _messageList.push(msg.payload);
+  componentWillUnmount() {
+    sb.removeChannelHandler('MessageHandler');
+  }
+
+  getMessages() {
+    sb.getMessagesLoadMore({
+      limit: 100,
+      successFunc: (data) => {
+        data.messages.reverse().forEach(function(msg, index){
+          if(sb.isMessage(msg.cmd)) {
+            _messageList.push(msg.payload);
+          }
+        });
+        _self.setState({ messageList: _messageList.concat(_self.state.messageList) });
+      },
+      errorFunc: (status, error) => {
+        console.log(status, error);
+      }
+    });
+  }
+
+  onSendPress() {
+    this.state.channel.sendUserMessage(this.state.message, DATA, function(message, error){
+        if (error) {
+            console.error(error);
+            return;
         }
-      });
-      this.setState({ messageList: _messageList.concat(this.state.messageList) });
-    },
-    errorFunc: (status, error) => {
-      console.log(status, error);
-    }
-  });
-}
+        console.log(message);
+    });
 
-onSendPress() {
-  sendbird.message(this.state.message);
-  this.setState({message: ''});
-}
+    sb.message(_self.state.message);
+    _self.setState({message: ''});
+  }
 
 
  render() {
@@ -70,7 +85,7 @@ onSendPress() {
         </TouchableHighlight>
         <Text>Chat</Text>
        <TextInput
-       style={styles.input}
+       style={styles.container}
        value={this.state.mesage}
        onChangeText={(text) => this.setState({message: text})}
        />
@@ -85,8 +100,8 @@ onSendPress() {
  }
 
  onBackPress() {
-   sendbird.disconnect();
-   this.props.navigator.pop();
+   sb.disconnect();
+   _self.props.navigator.pop();
  }
 
 }

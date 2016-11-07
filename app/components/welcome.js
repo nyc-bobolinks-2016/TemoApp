@@ -8,7 +8,9 @@ import {
   View
 } from 'react-native';
 
-import Temo from './temo';
+import Login from './login';
+import Signup from './signup';
+
 
 export default class Welcome extends Component {
 
@@ -25,10 +27,16 @@ export default class Welcome extends Component {
           Temo
         </Text>
         <TouchableOpacity
-          onPress={this.navigate.bind(this, 'temo')}
-          text='Temo'
+          onPress={this.navigate.bind(this, 'login')}
+          text='Login'
         >
          <Text style={{ fontSize: 20, color: "grey"}}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={this.navigate.bind(this, 'login')}
+          text='Signup'
+        >
+         <Text style={{ fontSize: 20, color: "grey"}}>Signup</Text>
         </TouchableOpacity>
       </View>
     );

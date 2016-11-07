@@ -10,7 +10,6 @@ import {
   View
 } from 'react-native';
 
-const Realm = require('realm');
 
 class Signup extends Component {
   constructor() {

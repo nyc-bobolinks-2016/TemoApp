@@ -29,11 +29,9 @@ export default class NavMenu extends Component {
       <View style={styles.container}>
         <Text style={{ fontSize: 50}}>Temo</Text>
         <NavButton
-          stlye={styles.container}
           onPress={this.navigate.bind(this, 'conversations')}
           text='Conversation'/>
         <NavButton
-          stlye={styles.container}
           onPress={this.navigate.bind(this, 'contacts')}
           text='Contacts' />
       </View>
