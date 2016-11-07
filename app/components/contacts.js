@@ -8,12 +8,16 @@ import {
   TextInput,
   Image,
   ListView,
+  Navigator,
   TouchableOpacity,
 } from 'react-native';
 
 const PULLDOWN_DISTANCE = 40;
 const sendbird = require('sendbird');
 const ContactsList = require('react-native-contacts');
+import NavButton from './navButton';
+import NavMenu from './navMenu';
+
 
 
 export default class Contacts extends Component {
@@ -28,10 +32,8 @@ export default class Contacts extends Component {
     }
   }
 
-  navigate(routeName) {
-    this.props.navigator.push({
-      name : routeName
-    })
+  navigate() {
+    this.props.navigator.pop()
   }
 
   componentWillMount(){
@@ -48,13 +50,57 @@ export default class Contacts extends Component {
 
   render() {
    return (
-      <ListView
-      dataSource={this.state.dataSource}
-      renderRow={(rowData) => <Text style={styles.container}>{rowData.familyName}</Text>}
-      />
+     <View>
+     <ListView
+     dataSource={this.state.dataSource}
+     renderRow={(rowData) =>
+       <TouchableOpacity onPress={() => this.onContactPress()}>
+         <Text style={styles.container}>{rowData.familyName}</Text>
+       </TouchableOpacity>
+     }
+     />
+     <NavButton
+       onPress={this.navigate.bind(this)}
+       text='Back'
+       style={{ fontSize: 20, color: "grey"}}
+     />
+     <NavMenu
+     style={styles.container}
+     navigator={this.props.navigator}
+     />
+     </View>
    );
   }
-}
+
+
+  onContactPress(){
+    fetch('https://api.sendbird.com/v3/open_channels', {
+      method: 'POST',
+      body: JSON.stringify({
+    "documents": [
+      {
+          "cover_url": "",
+      }
+    ]
+    }),
+      headers: { 'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Api-Token': '0542663449a1134c749ea3db0c290967722e1e26'}
+    })
+    .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson) {
+            console.log(responseJson)
+        };
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+  }
+
+
+
 
 const styles = StyleSheet.create({
   container: {
