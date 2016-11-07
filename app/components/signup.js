@@ -10,54 +10,68 @@ import {
   View
 } from 'react-native';
 
-const Realm = require('realm');
 
-class Signup extends Component {
+export default class Signup extends Component {
   constructor() {
     super();
     this.state = {
-      password: '',
-      email: ''
+      username: '',
+      phone: ''
     }
   }
 
-  handleNewEmail(value) {
-    this.setState({email: value})
-  }
 
-  handleNewPassword(value) {
-    this.setState({password: value})
+  
+
+  handleNewPhone(value) {
+    this.setState({phone: value})
   }
 
   handleSignup() {
-    realm.write(() => {
-      realm.create('User', {email: this.state.email, password: this.state.password});
-    });
+    fetch('https://temo-api.herokuapp.com/users', { 
+    method: 'POST',
+    body: JSON.stringify( {
+                                  username: this.state.username,
+                                  phone: this.state.phone
+                              }),
+    headers: { 'Accept': 'application/json','Content-Type': 'application/json'}
+  })
+     .then((response) => response.json())
+     .then((responseJSON) => console.log(responseJSON))
+      .catch((error)=>{
+     console.log("Api call error");
+     alert(error.message);
+  });
+}
+
+
+
+
+
+  handleNewUsername(value) {
+    this.setState({username: value})
   }
 
  render() {
    return (
-     <View style={styles.container}>
-       <Text style={{ fontSize: 50}}>
+     <View>
+     <Text style={{ fontSize: 50}}>
         Signup
        </Text>
        <Text style={{ fontSize: 20}}>
         New email
        </Text>
        <TextInput style={{height: 40, borderWidth: 1}}
-         placeholder="email"
-         value={this.state.email}
-         onChangeText={this.handleNewEmail.bind(this)}
-         />
-
+         placeholder="username"
+         value={this.state.username}
+         onChangeText={this.handleNewUsername.bind(this)} />
          <Text style={{ fontSize: 20}}>
           New password
          </Text>
        <TextInput style={{height: 40, borderWidth: 1}}
-         placeholder="password"
+         placeholder="phone"
          value={this.state.password}
-         onChangeText={this.handleNewPassword.bind(this)}
-         />
+         onChangeText={this.handleNewPhone.bind(this)}  />
        <TouchableOpacity onPress={this.handleSignup.bind(this)}>
         <Text style={{ fontSize: 20, color: "grey"}}>Create Acount</Text>
        </TouchableOpacity>

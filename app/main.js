@@ -13,6 +13,7 @@ import Temo from './components/temo';
 import Contacts from './components/contacts';
 import Welcome from './components/welcome';
 import Conversations from './components/conversations';
+import Signup from './components/signup';
 
 
 
@@ -32,14 +33,16 @@ export default class Main extends Component {
       if(route.name === 'welcome') {
         return <Welcome navigator={navigator} />
       }
+      if(route.name === 'signup') {
+        return <Signup navigator={navigator} /> 
+      }
     }
 
     render() {
       return (
         <Navigator
-          initialRoute = {{name: 'welcome'}}
-          renderScene = {this.renderScene}
-        />
+          initialRoute = {{name: 'signup'}}
+          renderScene = {this.renderScene}/>
       );
     }
   }
