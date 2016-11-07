@@ -43,8 +43,7 @@ export default class Conversations extends Component {
       <ListView
       conversations={this.state.conversations}
       onEndReached={() => this.getConversationList(this.state.next)}
-      onEndReachedThreshold={PULLDOWN_DISTANCE}
-      />
+      onEndReachedThreshold={PULLDOWN_DISTANCE}/>
      </View>
    );
  }
