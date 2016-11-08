@@ -42,57 +42,38 @@ export default class Contacts extends Component {
       if(err && err.type === 'permissionDenied'){
 
       } else {
-
-        for(var i = 0; i < contacts.length; i++ ) {
-          console.log(contacts[i].phoneNumbers[0].number)
+        contacts.forEach((contact)=>{
           fetch('https://temo-api.herokuapp.com/users/show', {
-            method: 'post',
-            headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
-            body: JSON.stringify({
-            phone: contacts[i].phoneNumbers[0].number,
+              method: 'post',
+              headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
+              body: JSON.stringify({
+              phone: contact.phoneNumbers[0].number,
             })
           })
           .then((response) => response.json())
           .then((responseJson) => {
-            console.log(responseJson )
-            console.log(responseJson.status)
-
-          if (responseJson.created_at) {
-            console.log("hi")
-            console.log(this.state.contactList)
-            console.log("ho")
-            console.log(contacts[0])
-            console.log(contacts[1])
-            console.log(contacts[2])
-            console.log(contacts[3])
-            console.log(contacts[4])
-
-
-
-            this.setState({contactList: this.state.contactList.concat([contacts[i]]  )})
-            console.log(this.state.contactList)
-
-          } else {
-            "invalid phone number"
-          }
+            if (responseJson.created_at) {
+              this.setState({contactList: this.state.contactList.concat(contact)})
+            }
           })
-        }
+        })
       }
       this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.contactList)})
     })
   }
 
   render() {
+    console.log(this.state.contactList)
    return (
      <View>
-     <ListView
-     dataSource={this.state.dataSource}
-     renderRow={(rowData) =>
-       <TouchableOpacity onPress={() => this.onContactPress(rowData.phoneNumbers[0].number)}>
-         <Text style={styles.container}>{rowData.familyName}</Text>
-       </TouchableOpacity>
-     }
-     />
+       <ListView
+        dataSource={this.state.dataSource}
+        renderRow={(rowData) =>
+         <TouchableOpacity onPress={() => this.onContactPress(rowData.phoneNumbers[0].number)}>
+           <Text style={styles.container}>{rowData.familyName}</Text>
+         </TouchableOpacity>
+       }
+       />
      <NavButton
        onPress={this.navigate.bind(this)}
        text='Back'

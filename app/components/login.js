@@ -54,7 +54,6 @@ export default class Login extends Component {
     if (responseJson.created_at != null) {
       console.log(responseJson)
       this.props.navigator.push({name: 'contacts'})
-      console.log("yes")
     } else {
       console.log("no")
 
