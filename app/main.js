@@ -14,7 +14,7 @@ import Contacts from './components/contacts';
 import Welcome from './components/welcome';
 import Conversations from './components/conversations';
 import Signup from './components/signup';
-
+import Login from './components/login';
 
 
 export default class Main extends Component {
@@ -36,12 +36,15 @@ export default class Main extends Component {
       if(route.name === 'signup') {
         return <Signup navigator={navigator} /> 
       }
+      if(route.name === 'login') {
+        return <Login navigator={navigator} /> 
+      }
     }
 
     render() {
       return (
         <Navigator
-          initialRoute = {{name: 'contacts'}}
+          initialRoute = {{name: 'signup'}}
           renderScene = {this.renderScene}/>
       );
     }

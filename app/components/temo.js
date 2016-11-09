@@ -14,6 +14,7 @@ import NavMenu from './navMenu';
 export default class Temo extends Component {
 
  render() {
+  console.log(currentUser)
    return (
      <View style={styles.container}>
       <NavMenu navigator={this.props.navigator}/>

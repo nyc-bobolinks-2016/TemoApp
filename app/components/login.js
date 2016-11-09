@@ -8,23 +8,28 @@ import {
   View
 } from 'react-native';
 
-import realm from './realm'
 const sendbird = require('sendbird')
 
+
 export default class Login extends Component {
+
+navigate(routeName) {
+    this.props.navigator.push({
+      name : routeName
+    })
+  }
+
   constructor() {
     super();
     this.state = {
-      password: '',
-      email: '',
-      username: ''
-
+      username: '',
+      password: ''
     }
   }
 
   onPress() {
     sendbird.init({
-      app_id: '6042A607-C497-460C-B8E8-9934DF5D8529'
+      app_id: '6042A607-C497-460C-B8E8-9934DF5D8529',
       guest_id: this.state.username,
       user_name: this.state.username,
       image_url: '',
@@ -38,58 +43,51 @@ export default class Login extends Component {
     })
   }
 
-  handleChangeEmail(value) {
-    this.setState({email: value})
+  handleChangeUsername(value) {
+    this.setState({username: value})
+    global.testusername = value
   }
 
   handleChangePassword(value) {
     this.setState({password: value})
   }
 
-  handleLogin() {
-    if (realm.objects('User').filtered('email = {this.state.email}')) {
-      var user = realm.objects('User').filtered('email = {this.state.email}')
-      if (user.password == this.state.password) {
-        console.log("success")
-      }
-    } else {
-      console.log("fail")
-    }
-  }
+  // handleLogin() {
+  //     global.currentUser = this.state.username
+  //     console.log(currentUser)
+
+  // }
 
  render() {
 
-  var Contacts = require('react-native-contacts')
-
-  Contacts.getAll((err, contacts) => {
-    if(err && err.type === 'permissionDenied'){
-      // x.x
-    } else {
-      console.log(contacts)
-      console.log("hello")
-
-    }
-  })
-
    return (
-     <View style={styles.container}>
+     <View>
        <Text style={{ fontSize: 50}}>
         Temo
        </Text>
        <TextInput
          style={{height: 40, borderWidth: 1}}
-         onChangeText={this.handleChangeEmail.bind(this)}
-         value={this.state.email}
-         />
+         onChangeText={this.handleChangeUsername.bind(this)}
+         value={this.state.username}/>
        <TextInput
          style={{height: 40, borderWidth: 1}}
          onChangeText={this.handleChangePassword.bind(this)}
-         value={this.state.password}
-         />
+         value={this.state.password}/>
 
-       <TouchableOpacity onPress={this.handleLogin.bind(this)}>
+
+
+
+
+       <TouchableOpacity onPress={this.navigate.bind(this, 'conversations')}
+       text='Conversations'
+       >
         <Text style={{ fontSize: 20, color: "grey"}}>Login</Text>
        </TouchableOpacity>
+
+
+
+
+
        
        <TouchableOpacity>
         <Text style={{ fontSize: 20, color: "grey"}}>Sign Up</Text>

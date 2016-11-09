@@ -39,10 +39,23 @@ export default class Contacts extends Component {
   componentWillMount(){
     ContactsList.getAll((err, contacts) => {
       if(err && err.type === 'permissionDenied'){
-
+        
       } else {
-        console.log(contacts)
-        this.setState({contactList: contacts})
+        contacts.forEach((contact)=>{
+          fetch('https://temo-api.herokuapp.com/users/show', {
+              method: 'post',
+              headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
+              body: JSON.stringify({
+              phone: contact.phoneNumbers[0].number,
+            })
+          })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            if (responseJson.created_at) {
+              this.setState({contactList: this.state.contactList.concat(contact)})
+            }
+          })
+        })
       }
       this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.contactList)})
     })
@@ -179,7 +192,7 @@ const styles = StyleSheet.create({
 // export default class Contacts extends Component {
 //   constructor() {
 //     super();
-//     sb = SendBird.getInstance();
+//     // sb = SendBird.getInstance();
 //     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 //     this.state = {
 //       dataSource: ds.cloneWithRows([]),

@@ -18,6 +18,9 @@ export default class Welcome extends Component {
     })
   }
 
+
+
+
   render() {
     return (
     <View style={styles.container}>
@@ -25,11 +28,12 @@ export default class Welcome extends Component {
           Temo
         </Text>
         <TouchableOpacity
-          onPress={this.navigate.bind(this, 'temo')}
-          text='Temo'
+          onPress={this.navigate.bind(this, 'login')}
+          text='Login'
         >
+        
          <Text style={{ fontSize: 20, color: "grey"}}>Login</Text>
-        </TouchableOpacity>
+         </TouchableOpacity>
       </View>
     );
   }
