@@ -123,12 +123,9 @@ export default class Contacts extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
               if (responseJson) {
-                debugger
                 console.log("good");
-
                 _self.props.navigator.push({name: 'chat'});
               } else {
-                debugger
                 console.error("bad");
               }
 
