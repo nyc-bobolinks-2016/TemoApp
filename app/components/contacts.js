@@ -84,9 +84,9 @@ export default class Contacts extends Component {
           dataSource={dataSource}
           renderRow={(rowData, sectionID, rowID) => (
               <TouchableOpacity
-                onPress={this.onContactPress(rowData.phoneNumbers[0].numbers)}
+                onPress={this.onContactPress}
               >
-                <Text style={styles.buttonText}>{rowData.familyName}</Text>
+                <Text style={{ fontSize: 50, borderWidth: 1 }}>{rowData.familyName}</Text>
               </TouchableOpacity>
           )}
         />
@@ -104,12 +104,16 @@ export default class Contacts extends Component {
 
           if (error) {
               console.error(error);
+              console.error("error");
+
               return;
           }
           channel.enter(function(response, error){
             console.log("now here")
               if (error) {
                   console.error(error);
+                  console.error("error2");
+
                   return;
               }
               fetch('https://temo-api.herokuapp.com/conversations', {
@@ -124,9 +128,11 @@ export default class Contacts extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
               if (responseJson) {
-                _self.props.navigator.push({name: 'chat', route: channel, usertwo: usertwo});
+                console.error("good");
+
+                _self.props.navigator.push({name: 'chat'});
               } else {
-                "invalid phone number"
+                console.error("bad");
               }
 
             })
@@ -139,10 +145,9 @@ export default class Contacts extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
   welcome: {
     fontSize: 20,

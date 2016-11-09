@@ -37,8 +37,6 @@ export default class Login extends Component {
     sb.connect(_self.state.phone, function (user, error) {});
 
     sb.updateCurrentUserInfo(this.state.username, '', function(response, error) {
-      _self.setState({
-      });
     });
 
     fetch('https://temo-api.herokuapp.com/users', {
@@ -55,9 +53,7 @@ export default class Login extends Component {
       console.log(responseJson)
       this.props.navigator.push({name: 'contacts'})
     } else {
-      console.log("no")
-
-      "invalid phone number"
+      console.log("no  invalid phone number")
     }
 
   })
@@ -106,7 +102,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
   welcome: {
     fontSize: 20,

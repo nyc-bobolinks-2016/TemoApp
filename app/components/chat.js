@@ -60,7 +60,7 @@ export default class Chat extends Component {
   }
 
   onSendPress() {
-    this.state.channel.sendUserMessage(this.state.message, DATA, function(message, error){
+    this.props.channel.sendUserMessage(this.state.message, DATA, function(message, error){
         if (error) {
             console.error(error);
             return;
@@ -93,7 +93,7 @@ export default class Chat extends Component {
         underlayColor={'#4e4273'}
         onPress={() => this.onSendPress()}
         >
-        <Text style={styles.sendLabel}>send</Text>
+        <Text style={styles.welcome}>send</Text>
        </TouchableHighlight>
      </View>
    );
