@@ -23,7 +23,7 @@ navigate(routeName) {
     super();
     this.state = {
       username: '',
-      password: ''
+      phone: ''
     }
   }
 
