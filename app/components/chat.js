@@ -20,6 +20,7 @@ export default class Chat extends Component {
     super();
     sb = SendBird.getInstance();
     self = this
+    var ChannelHandler = new sb.ChannelHandler();
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
       message: '',
@@ -34,13 +35,18 @@ export default class Chat extends Component {
     })
   }
 
-  componentWillMount() {
 
-  };
 
-  componentWillUnmount() {
-    sb.removeChannelHandler('MessageHandler');
+  componentDidMount(){
+    ChannelHandler.onMessageReceived = function(channel, message){
+    console.log(channel, message);
+    };
+
+    sb.addChannelHandler("MessageHandler", ChannelHandler);
   }
+
+
+
 
   getMessages() {
     sb.getMessagesLoadMore({
@@ -60,16 +66,17 @@ export default class Chat extends Component {
   }
 
   onSendPress() {
+    var messages = []
     this.props.channel.sendUserMessage(this.state.message, DATA, function(message, error){
         if (error) {
             console.error(error);
             return;
         }
         console.log(message);
+        messages.push(message)
     });
 
-    sb.message(_self.state.message);
-    _self.setState({message: ''});
+    this.setState({message: '', messageList: this.messageList.concat([messages])});
   }
 
 

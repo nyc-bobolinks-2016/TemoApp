@@ -16,13 +16,13 @@ export default class Login extends Component {
     this.state = {
       username: '',
       phone: ''
-
     }
   }
 
 
   handleChangeUsername(value) {
     this.setState({username: value})
+    global.currentUser = value
   }
 
   handleChangePhone(value) {
