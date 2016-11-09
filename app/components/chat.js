@@ -20,12 +20,16 @@ export default class Chat extends Component {
     super();
     sb = SendBird.getInstance();
     self = this
-    var ChannelHandler = new sb.ChannelHandler();
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      channel: this.props.channel,
+      userOne: this.props.userOne,
+      userTwo: this.props.userOne,
       message: '',
       messageList: [],
       dataSource: ds.cloneWithRows([]),
+      fullWord: false,
+      percentage: '',
     }
   }
 
@@ -35,18 +39,24 @@ export default class Chat extends Component {
     })
   }
 
-
-
-  componentDidMount(){
-    ChannelHandler.onMessageReceived = function(channel, message){
-    console.log(channel, message);
-    };
-
-    sb.addChannelHandler("MessageHandler", ChannelHandler);
+  componentWillUnmount() {
+    sb.removeChannelHandler('MessageHandler');
   }
 
 
-
+  componentDidMount(){
+    var ChannelHandler = new sb.ChannelHandler();
+    var _messages = [];
+    ChannelHandler.onMessageReceived = function(channel, message){
+    console.log(channel, message);
+    _messages.push(message);
+    };
+    this.setState({
+      messageList: this.state.messageList.concat(_messages),
+      dataSource: this.state.dataSource.cloneWithRows(this.messageList)
+    })
+    sb.addChannelHandler("MessageHandler", ChannelHandler);
+  }
 
   getMessages() {
     sb.getMessagesLoadMore({
@@ -80,6 +90,47 @@ export default class Chat extends Component {
   }
 
 
+  handleKey(e) {
+    if (e.nativeEvent.key == " ") {
+      this.setState({fullWord: true})
+    } else {
+      this.setState({fullWord: false})
+    }
+  }
+
+
+  handleChange(value) {
+   this.setState({message: value})
+   console.log(this.state.message)
+
+   if (this.state.full_word == true) {
+     return fetch('https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment', {
+       method: 'POST',
+       body: JSON.stringify({
+     "documents": [
+       {
+         "language": "en",
+         "id": "0",
+         "text": this.state.message
+       }
+     ]
+   }),
+       headers: { 'Accept': 'application/json','Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': 'c629cc2e0c134d1cad4a33b8cb376462'}
+     })
+    .then((response) => response.json())
+         .then((responseJson) => {
+           if (responseJson.documents) {
+             console.log(responseJson.documents[0].score)
+           return responseJson.documents[0].score;
+         };
+         })
+         .catch((error) => {
+           console.error(error);
+         });
+       }
+  }
+
+
  render() {
    return (
      <View style={styles.container}>
@@ -94,8 +145,13 @@ export default class Chat extends Component {
        <TextInput
        style={styles.container}
        value={this.state.mesage}
-       onChangeText={(text) => this.setState({message: text})}
+       onKeyPress={this.handleKey.bind(this)}
+       onChangeText={this.handleChange.bind(this)}
        />
+       <Text>
+       {Math.floor(this.state.percentage * 100)}
+       </Text>
+
        <TouchableHighlight
         underlayColor={'#4e4273'}
         onPress={() => this.onSendPress()}
