@@ -49,7 +49,7 @@ export default class Main extends Component {
       return (
         <Navigator
           style={{flex: 1, backgroundColor: "blue"}}
-          initialRoute = {{name: 'login'}}
+          initialRoute = {{name: 'signup'}}
           renderScene = {this.renderScene}
         />
       );

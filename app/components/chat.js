@@ -20,9 +20,10 @@ export default class Chat extends Component {
     super();
     sb = SendBird.getInstance();
     self = this
-    var ChannelHandler = new sb.ChannelHandler();
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
+      percentage: '',
+      fullWord: false,
       message: '',
       messageList: [],
       dataSource: ds.cloneWithRows([]),
@@ -35,20 +36,20 @@ export default class Chat extends Component {
     })
   }
 
+  componentWillMount() {
 
+  };
 
-  componentDidMount(){
-    ChannelHandler.onMessageReceived = function(channel, message){
-    console.log(channel, message);
-    };
-
-    sb.addChannelHandler("MessageHandler", ChannelHandler);
+  componentDidMount() {
+    this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.messageList || [])})
   }
 
-
-
+  componentWillUnmount() {
+    sb.removeChannelHandler('MessageHandler');
+  }
 
   getMessages() {
+    _messageList = []
     sb.getMessagesLoadMore({
       limit: 100,
       successFunc: (data) => {
@@ -67,20 +68,62 @@ export default class Chat extends Component {
 
   onSendPress() {
     var messages = []
-    this.props.channel.sendUserMessage(this.state.message, DATA, function(message, error){
+
+    currentChannel.sendUserMessage(this.state.message, '', function(message, error){
         if (error) {
             console.error(error);
             return;
         }
-        console.log(message);
-        messages.push(message)
+
+        console.log("message", message.message);
+        messages.push(message.message)
     });
 
-    this.setState({message: '', messageList: this.messageList.concat([messages])});
+    this.setState({message: '', messageList: this.state.messageList.concat([messages])});
+  }
+
+  handleKey(e) {
+    if (e.nativeEvent.key === " ") {
+      this.setState({fullWord: true})
+    } else {
+      this.setState({fullWord: true})
+    }
+  }
+
+  handleChange(value) {
+  this.setState({message: value})
+  if (this.state.fullWord === true) {
+    return fetch('https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment', {
+      method: 'POST',
+      body: JSON.stringify({
+    "documents": [
+      {
+        "language": "en",
+        "id": "0",
+        "text": this.state.message
+      }
+    ]
+  }),
+      headers: { 'Accept': 'application/json','Content-Type': 'application/json', 'Ocp-Apim-Subscription-Key': 'c629cc2e0c134d1cad4a33b8cb376462'}
+    })
+   .then((response) => response.json())
+        .then((responseJson) => {
+          if (responseJson.documents) {
+            console.log(responseJson.documents[0].score)
+            this.setState({percentage: responseJson.documents[0].score})
+          return responseJson.documents[0].score;
+        };
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }
   }
 
 
  render() {
+   const data = this.state.dataSource.cloneWithRows(this.state.messageList || [])
+
    return (
      <View style={styles.container}>
         <TouchableHighlight
@@ -91,16 +134,27 @@ export default class Chat extends Component {
         <Text style={{color: "#000"}}>&lt; Back</Text>
         </TouchableHighlight>
         <Text>Chat</Text>
+        <ListView
+        enableEmptySections
+        dataSource={data}
+        renderRow={(rowData, sectionID, rowID) => (
+          <Text>{rowData}</Text>
+        )}
+        />
        <TextInput
-       style={styles.container}
-       value={this.state.mesage}
-       onChangeText={(text) => this.setState({message: text})}
+         style={{flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F5FCFF' }}
+         value={this.state.message}
+         onKeyPress={this.handleKey.bind(this)}
+         onChangeText={this.handleChange.bind(this)}
        />
+       <Text>
+        {Math.floor(this.state.percentage * 100)}
+       </Text>
        <TouchableHighlight
         underlayColor={'#4e4273'}
         onPress={() => this.onSendPress()}
         >
-        <Text style={styles.welcome}>send</Text>
+        <Text style={styles.sendLabel}>send</Text>
        </TouchableHighlight>
      </View>
    );
@@ -110,7 +164,6 @@ export default class Chat extends Component {
    sb.disconnect();
    _self.props.navigator.pop();
  }
-
 }
 
 const styles = StyleSheet.create({
