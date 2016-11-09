@@ -40,9 +40,6 @@ export default class Contacts extends Component {
         console.log('before filter', contacts);
 
         const contactList = this.filterContacts(contacts);
-        console.log(contactList, 'contact list')
-        console.log(contactList, 'contact list 65')
-
 
         this.setState({
           contactList: contactList
@@ -79,10 +76,7 @@ export default class Contacts extends Component {
 
 
   render() {
-    console.log(this.state.contactList)
     const dataSource = this.state.dataSource.cloneWithRows(this.state.contactList || [])
-    console.log(dataSource)
-
     return (
       <View style={styles.container}>
         <ListView
