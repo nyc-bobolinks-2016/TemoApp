@@ -33,7 +33,7 @@ export default class Welcome extends Component {
          <Text style={{ fontSize: 20, color: "grey"}}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={this.navigate.bind(this, 'login')}
+          onPress={this.navigate.bind(this, 'signup')}
           text='Signup'
         >
          <Text style={{ fontSize: 20, color: "grey"}}>Signup</Text>

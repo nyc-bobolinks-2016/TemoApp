@@ -96,9 +96,15 @@ export default class Contacts extends Component {
 
 
     onContactPress(usertwo_phone){
+      global.userTwo = usertwo_phone
       var _self = this
       sb.OpenChannel.createChannel("rand", "", "", [sb.currentUser.userId], function (channel, error) {
+        _self.setState({channel: channel})
+        console.log(channel)
+        global.currentChannel = channel
         console.log("in here")
+        console.log(channel.url)
+
 
           if (error) {
               console.log("error");
@@ -115,7 +121,7 @@ export default class Contacts extends Component {
                 method: 'post',
                 headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
                 body: JSON.stringify({
-                channel_url: channel,
+                channel_url: channel.url,
                 user_one: sb.currentUser.nickname,
                 user_two: usertwo_phone,
               })
@@ -123,12 +129,10 @@ export default class Contacts extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
               if (responseJson) {
-                debugger
                 console.log("good");
 
-                _self.props.navigator.push({name: 'chat'});
+                _self.props.navigator.push({name: 'chat', channel: channel.url});
               } else {
-                debugger
                 console.error("bad");
               }
 

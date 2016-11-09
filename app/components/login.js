@@ -1,6 +1,8 @@
+'use strict'
+
 import React, { Component } from 'react';
 import {
-  Navigator,
+  AppRegistry,
   StyleSheet,
   Text,
   TextInput,
@@ -8,101 +10,68 @@ import {
   View
 } from 'react-native';
 
-import SendBird from 'sendbird'
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
-      username: '',
-      phone: ''
+      password: '',
+      email: ''
     }
   }
 
-
-  handleChangeUsername(value) {
-    this.setState({username: value})
-    global.currentUser = value
+  handleNewEmail(value) {
+    this.setState({email: value})
   }
 
-  handleChangePhone(value) {
-    this.setState({phone: value})
+  handleNewPassword(value) {
+    this.setState({password: value})
   }
 
   handleLogin() {
-    sb = new SendBird({
-      appId: '6042A607-C497-460C-B8E8-9934DF5D8529'
-    })
-    var _self = this
-    sb.connect(_self.state.phone, function (user, error) {});
-
-    sb.updateCurrentUserInfo(this.state.username, '', function(response, error) {
+    realm.write(() => {
+      realm.create('User', {email: this.state.email, password: this.state.password});
     });
-
-    fetch('https://temo-api.herokuapp.com/users', {
-      method: 'post',
-      headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
-      body: JSON.stringify({
-      username: this.state.username,
-      phone: this.state.phone
-    })
-  })
-  .then((response) => response.json())
-  .then((responseJson) => {
-    if (responseJson.created_at != null) {
-      console.log(responseJson)
-      this.props.navigator.push({name: 'contacts'})
-    } else {
-      console.log("no  invalid phone number")
-    }
-
-  })
   }
 
  render() {
-  var Contacts = require('react-native-contacts')
-
-  Contacts.getAll((err, contacts) => {
-    if(err && err.type === 'permissionDenied'){
-
-    } else {
-    }
-  })
-
    return (
      <View style={styles.container}>
        <Text style={{ fontSize: 50}}>
-        Temo
+        Login
        </Text>
-       <TextInput
-         style={{height: 40, borderWidth: 1}}
-         onChangeText={this.handleChangeUsername.bind(this)}
-         value={this.state.username}
-         />
-       <TextInput
-         style={{height: 40, borderWidth: 1}}
-         onChangeText={this.handleChangePhone.bind(this)}
-         value={this.state.phone}
+       <Text style={{ fontSize: 20}}>
+        New email
+       </Text>
+       <TextInput style={{height: 40, borderWidth: 1}}
+         placeholder="email"
+         value={this.state.email}
+         onChangeText={this.handleNewEmail.bind(this)}
          />
 
+         <Text style={{ fontSize: 20}}>
+          New password
+         </Text>
+       <TextInput style={{height: 40, borderWidth: 1}}
+         placeholder="password"
+         value={this.state.password}
+         onChangeText={this.handleNewPassword.bind(this)}
+         />
        <TouchableOpacity onPress={this.handleLogin.bind(this)}>
-        <Text style={{ fontSize: 20, color: "grey"}}>Login</Text>
-       </TouchableOpacity>
-
-       <TouchableOpacity>
-        <Text style={{ fontSize: 20, color: "grey"}}>Sign Up</Text>
+        <Text style={{ fontSize: 20, color: "grey"}}>Create Acount</Text>
        </TouchableOpacity>
      </View>
    );
  }
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#F5FCFF',
   },
   welcome: {
     fontSize: 20,

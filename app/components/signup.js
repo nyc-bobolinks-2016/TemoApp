@@ -1,8 +1,6 @@
-'use strict'
-
 import React, { Component } from 'react';
 import {
-  AppRegistry,
+  Navigator,
   StyleSheet,
   Text,
   TextInput,
@@ -10,68 +8,132 @@ import {
   View
 } from 'react-native';
 
+import SendBird from 'sendbird'
 
-class Signup extends Component {
+export default class Signup extends Component {
   constructor() {
     super();
     this.state = {
-      password: '',
-      email: ''
+      username: '',
+      phone: ''
     }
   }
 
-  handleNewEmail(value) {
-    this.setState({email: value})
+
+  handleChangeUsername(value) {
+    this.setState({username: value})
+    global.currentUser = value
   }
 
-  handleNewPassword(value) {
-    this.setState({password: value})
+  handleChangePhone(value) {
+    this.setState({phone: value})
   }
 
   handleSignup() {
-    realm.write(() => {
-      realm.create('User', {email: this.state.email, password: this.state.password});
+    sb = new SendBird({
+      appId: '6042A607-C497-460C-B8E8-9934DF5D8529'
+    })
+    var _self = this
+    sb.connect(_self.state.phone, function (user, error) {});
+
+    sb.updateCurrentUserInfo(this.state.username, '', function(response, error) {
     });
+
+    fetch('https://temo-api.herokuapp.com/users', {
+      method: 'post',
+      headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
+      body: JSON.stringify({
+      username: this.state.username,
+      phone: this.state.phone
+    })
+  })
+  .then((response) => response.json())
+  .then((responseJson) => {
+    if (responseJson.created_at != null) {
+      console.log(responseJson)
+      this.props.navigator.push({name: 'contacts'})
+    } else {
+      console.log("no  invalid phone number")
+    }
+
+  })
   }
 
+  handleLogin() {
+    sb = new SendBird({
+      appId: '6042A607-C497-460C-B8E8-9934DF5D8529'
+    })
+    var _self = this
+    sb.connect(_self.state.phone, function (user, error) {});
+
+    sb.updateCurrentUserInfo(this.state.username, '', function(response, error) {
+    });
+
+    fetch('https://temo-api.herokuapp.com/users/login', {
+      method: 'post',
+      headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
+      body: JSON.stringify({
+      username: this.state.username,
+      phone: this.state.phone
+    })
+  })
+  .then((response) => response.json())
+  .then((responseJson) => {
+    if (responseJson.created_at) {
+      console.log(responseJson)
+      this.props.navigator.push({name: 'contacts'})
+    } else {
+      console.log("no  invalid phone number")
+    }
+
+  })
+  }
+
+
  render() {
+  var Contacts = require('react-native-contacts')
+
+  Contacts.getAll((err, contacts) => {
+    if(err && err.type === 'permissionDenied'){
+
+    } else {
+    }
+  })
+
    return (
      <View style={styles.container}>
        <Text style={{ fontSize: 50}}>
-        Signup
+        Temo
        </Text>
-       <Text style={{ fontSize: 20}}>
-        New email
-       </Text>
-       <TextInput style={{height: 40, borderWidth: 1}}
-         placeholder="email"
-         value={this.state.email}
-         onChangeText={this.handleNewEmail.bind(this)}
+       <TextInput
+         style={{height: 40, borderWidth: 1}}
+         onChangeText={this.handleChangeUsername.bind(this)}
+         value={this.state.username}
+         />
+       <TextInput
+         style={{height: 40, borderWidth: 1}}
+         onChangeText={this.handleChangePhone.bind(this)}
+         value={this.state.phone}
          />
 
-         <Text style={{ fontSize: 20}}>
-          New password
-         </Text>
-       <TextInput style={{height: 40, borderWidth: 1}}
-         placeholder="password"
-         value={this.state.password}
-         onChangeText={this.handleNewPassword.bind(this)}
-         />
+       <TouchableOpacity onPress={this.handleLogin.bind(this)}>
+        <Text style={{ fontSize: 20, color: "grey"}}>Login</Text>
+       </TouchableOpacity>
+
        <TouchableOpacity onPress={this.handleSignup.bind(this)}>
-        <Text style={{ fontSize: 20, color: "grey"}}>Create Acount</Text>
+        <Text style={{ fontSize: 20, color: "grey"}}>Sign up</Text>
        </TouchableOpacity>
      </View>
    );
  }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
   welcome: {
     fontSize: 20,
