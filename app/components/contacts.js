@@ -18,72 +18,79 @@ const ContactsList = require('react-native-contacts');
 import NavButton from './navButton';
 import NavMenu from './navMenu';
 
-
-
 export default class Contacts extends Component {
   constructor() {
     super();
     sb = SendBird.getInstance();
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([]),
-      contactList: [],
-      page: 0,
-      next: 0,
-    }
+      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+      contactList: []
+    };
   }
 
   navigate() {
     this.props.navigator.pop()
   }
 
-  componentWillMount(){
+  componentDidMount() {
     ContactsList.getAll((err, contacts) => {
       if(err && err.type === 'permissionDenied'){
 
       } else {
-        contacts.forEach((contact)=>{
-          fetch('https://temo-api.herokuapp.com/users/show', {
-              method: 'post',
-              headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
-              body: JSON.stringify({
-              phone: contact.phoneNumbers[0].number,
-            })
-          })
-          .then((response) => response.json())
-          .then((responseJson) => {
-            if (responseJson.created_at) {
-              this.setState({contactList: this.state.contactList.concat(contact)})
-            }
-          })
+        console.log('before filter', contacts);
+
+        const contactList = this.filterContacts(contacts);
+        console.log(contactList, 'contact list')
+        console.log(contactList, 'contact list 65')
+
+
+        this.setState({
+          contactList: contactList
         })
       }
-      this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.contactList)})
+    })
+  }
+
+  filterContacts(contacts) {
+     fetch('https://temo-api.herokuapp.com/users/show', {
+        method: 'post',
+        headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
+        body: JSON.stringify({
+        contacts: contacts,
+      })
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson !== null) {
+        this.setState({
+          contactList: responseJson
+        })
+      }
+    })
+    .catch((error) => {
+      throw new Error(error)
     })
   }
 
   render() {
     console.log(this.state.contactList)
-   return (
-     <View>
-       <ListView
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) =>
-         <TouchableOpacity onPress={() => this.onContactPress(rowData.phoneNumbers[0].number)}>
-           <Text style={styles.container}>{rowData.familyName}</Text>
-         </TouchableOpacity>
-       }
-       />
-     <NavButton
-       onPress={this.navigate.bind(this)}
-       text='Back'
-       style={{ fontSize: 20, color: "grey"}}
-     />
-     <NavMenu
-     style={styles.container}
-     navigator={this.props.navigator}
-     />
-     </View>
+    const dataSource = this.state.dataSource.cloneWithRows(this.state.contactList || [])
+    console.log(dataSource)
+
+    return (
+      <View style={styles.container}>
+        <ListView
+          enableEmptySections
+          dataSource={dataSource}
+          renderRow={(rowData, sectionID, rowID) => (
+              <TouchableOpacity
+                onPress={this.onContactPress(rowData.phoneNumbers[0].numbers)}
+              >
+                <Text style={styles.buttonText}>{rowData.familyName}</Text>
+              </TouchableOpacity>
+          )}
+        />
+      </View>
    );
   }
 
@@ -132,6 +139,7 @@ export default class Contacts extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "row",
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
@@ -146,4 +154,9 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  listView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
