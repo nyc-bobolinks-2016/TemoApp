@@ -72,6 +72,12 @@ export default class Contacts extends Component {
     })
   }
 
+  handleContactChoice(rowData){
+    const number = rowData['phoneNumbers'][0]['number']
+    this.onContactPress(number)
+  }
+
+
   render() {
     console.log(this.state.contactList)
     const dataSource = this.state.dataSource.cloneWithRows(this.state.contactList || [])
@@ -84,7 +90,7 @@ export default class Contacts extends Component {
           dataSource={dataSource}
           renderRow={(rowData, sectionID, rowID) => (
               <TouchableOpacity
-                onPress={this.onContactPress}
+                onPress={() => this.handleContactChoice(rowData)}
               >
                 <Text style={{ fontSize: 50, borderWidth: 1 }}>{rowData.familyName}</Text>
               </TouchableOpacity>
@@ -96,24 +102,19 @@ export default class Contacts extends Component {
 
 
     onContactPress(usertwo_phone){
-      console.log("in there")
-
       var _self = this
       sb.OpenChannel.createChannel("rand", "", "", [sb.currentUser.userId], function (channel, error) {
         console.log("in here")
 
           if (error) {
-              console.error(error);
-              console.error("error");
-
+              console.log("error");
               return;
           }
           channel.enter(function(response, error){
             console.log("now here")
               if (error) {
-                  console.error(error);
-                  console.error("error2");
-
+                  console.log(error);
+                  console.log("error2");
                   return;
               }
               fetch('https://temo-api.herokuapp.com/conversations', {
@@ -128,10 +129,12 @@ export default class Contacts extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
               if (responseJson) {
-                console.error("good");
+                debugger
+                console.log("good");
 
                 _self.props.navigator.push({name: 'chat'});
               } else {
+                debugger
                 console.error("bad");
               }
 
