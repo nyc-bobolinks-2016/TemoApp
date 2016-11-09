@@ -24,7 +24,7 @@ export default class Conversations extends Component {
       conversationList: [],
       page: 0,
       next: 0, 
-      conversations: null
+      conversations: []
     }
   }
 
@@ -34,60 +34,35 @@ export default class Conversations extends Component {
     })
   }
 
-  componentDidMount() {
+  componentWillMount() {
     fetch('http://localhost:3000/users/test', { 
     method: 'POST',
     headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
      body: JSON.stringify( {
-                                  username1: testusername
+                                  username: testusername
                               })
   })
 
      .then((response) => response.json())
-     .then((responseJSON) => {
-        this.setState({conversations: responseJSON})
-
-      })
+     .then((responseJSON) => {this.setState({conversations: responseJSON.conversations})})
       .catch((error)=>{
-     console.log("Api call error", error);
+     console.log("Api call error");
      alert(error.message);
   });
   }
-// // this.setState({users: responseJSON}))
-//  // <ListView
-//       // // conversations={this.state.conversations}
-//       // onEndReached={() => this.getConversationList(this.state.next)}
-//       // onEndReachedThreshold={PULLDOWN_DISTANCE}/> 
-
-
-
-renderPlaceholder() {
-    return (
-      <View style={{padding:50}}>
-        <Text>Loading...</Text>
-      </View>
-    )
-  }
-
-
 
   render() {
-    if (!this.state.conversations) {
-      return this.renderPlaceholder();
-    }
-    console.log("I'm this.state.conversations.conversations", this.state.conversations.conversations)
-    console.log("I'm the end obj supposed to be displayed", this.state.conversations.conversations[0].sentiment)
+
+    
    return (
      <View>
-     <Text style={{padding: 50}}>{this.state.conversations.converations}</Text>
+     {this.state.conversations.map((conversation) =>
+     <Text style={{padding: 50}}>{conversation.channel_url}</Text>
+      )}
      </View>
    );
  }
-// this.state.user.users[0].username
- // <ListView
-      // // conversations={this.state.conversations}
-      // onEndReached={() => this.getConversationList(this.state.next)}
-      // onEndReachedThreshold={PULLDOWN_DISTANCE}/> 
+ 
     
 
  onConversationPress(url) {
@@ -115,25 +90,5 @@ renderPlaceholder() {
    });
  }
 
- // getConversationList(page) {
- //   if ( page == 0 ) {
- //     return;
- //   }
- //   sendbird.getChannelList({
- //     page: page,
- //     limit: 20,
- //     successFunc(data) {
- //       this.setState({conversationList: this.state.conversationList.concat(data.conversations)}, () => {
- //         this.setState({
- //           dataSource: this.state.dataSource.cloneWithRows(this.state.conversationList),
- //           page: data.page,
- //           page: data.next
- //         });
- //       });
- //     },
- //     errorFunc: (status, error) => {
- //       console.log(status, error);
- //     }
- //   });
- //  }
+ 
  }

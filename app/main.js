@@ -44,7 +44,7 @@ export default class Main extends Component {
     render() {
       return (
         <Navigator
-          initialRoute = {{name: 'signup'}}
+          initialRoute = {{name: 'welcome'}}
           renderScene = {this.renderScene}/>
       );
     }
