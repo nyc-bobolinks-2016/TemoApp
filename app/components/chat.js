@@ -22,9 +22,9 @@ export default class Chat extends Component {
     self = this
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      channel: this.props.channel,
-      userOne: this.props.userOne,
-      userTwo: this.props.userOne,
+      channel: '',
+      userOne: '',
+      userTwo: '',
       message: '',
       messageList: [],
       dataSource: ds.cloneWithRows([]),
