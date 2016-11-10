@@ -1,6 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {
   AppRegistry,
   StyleSheet,
@@ -60,6 +61,7 @@ class Login extends Component {
        <TouchableOpacity onPress={this.handleLogin.bind(this)}>
         <Text style={{ fontSize: 20, color: "grey"}}>Create Acount</Text>
        </TouchableOpacity>
+       <KeyboardSpacer/>
      </View>
    );
  }

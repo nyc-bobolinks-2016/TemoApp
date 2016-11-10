@@ -10,8 +10,9 @@ import {
   Dimensions,
 } from 'react-native';
 
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-import SendBird from 'sendbird'
+import SendBird from 'sendbird';
 
 const windowSize = Dimensions.get('window');
 
@@ -95,8 +96,12 @@ export default class Chat extends Component {
   handleKey(e) {
     if (e.nativeEvent.key === " ") {
       this.setState({fullWord: true})
-    } else {
-      this.setState({fullWord: true})
+    } 
+    else if (e.nativeEvent.keyCode === 13) {
+      console.log("this is an enter press")
+    }
+    else {
+      this.setState({fullWord: false})
     }
   }
 
@@ -138,10 +143,10 @@ export default class Chat extends Component {
      <View style={styles.container}>
         <TouchableHighlight
         underlayColor={'#4e4273'}
-        onPress={this.onBackPress}
+        onPress={this.onBackPress.bind(this)}
         style={{marginLeft: 15}}
         >
-        <Text style={{color: "#000"}}>&lt; Back</Text>
+        <Text style={{color: "#000", padding: 20}}>&lt; Back</Text>
         </TouchableHighlight>
         <Text>Chat</Text>
         <ListView
@@ -157,8 +162,8 @@ export default class Chat extends Component {
          onKeyPress={this.handleKey.bind(this)}
          onChangeText={this.handleChange.bind(this)}
        />
-       <Text>
-        {Math.floor(this.state.percentage * 100)}
+       <Text style={{padding: 50}}>
+        {Math.floor(this.state.percentage * 100)}%
        </Text>
        <TouchableHighlight
         underlayColor={'#4e4273'}
@@ -166,6 +171,7 @@ export default class Chat extends Component {
         >
         <Text style={styles.sendLabel}>send</Text>
        </TouchableHighlight>
+       <KeyboardSpacer/>
      </View>
    );
  }
