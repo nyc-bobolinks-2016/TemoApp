@@ -10,8 +10,9 @@ import {
   Dimensions,
 } from 'react-native';
 
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-import SendBird from 'sendbird'
+import SendBird from 'sendbird';
 
 const windowSize = Dimensions.get('window');
 
@@ -170,6 +171,7 @@ export default class Chat extends Component {
         >
         <Text style={styles.sendLabel}>send</Text>
        </TouchableHighlight>
+       <KeyboardSpacer/>
      </View>
    );
  }
