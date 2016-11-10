@@ -72,6 +72,7 @@ export default class Conversations extends Component {
              console.error(error);
              return;
          } else {
+           global.currentChannel = channel
            _self.props.navigator.push({name: 'chat', channel: channel.url});
          }
        });
