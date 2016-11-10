@@ -10,7 +10,7 @@ import {
 
 import Login from './login';
 import Signup from './signup';
-
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 export default class Welcome extends Component {
 
@@ -38,6 +38,7 @@ export default class Welcome extends Component {
         >
          <Text style={{ fontSize: 20, color: "grey"}}>Signup</Text>
         </TouchableOpacity>
+        <KeyboardSpacer/>
       </View>
     );
   }

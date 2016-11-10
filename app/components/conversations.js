@@ -46,31 +46,26 @@ export default class Conversations extends Component {
     })
     .then((response) => response.json())
     .then((responseJSON) => {
-      console.log(responseJSON)
       this.setState({conversations: responseJSON.conversations})
     })
     .catch((error)=>{
-      console.log("Api call error");
     });
   }
+
 
 
   onConversationPress(url, secondUser) {
    global.secondUser = secondUser
    var _self = this
-   console.log(url)
    var chs = sb.OpenChannel.createOpenChannelListQuery();
-   console.log(chs)
 
     sb.OpenChannel.getChannel(url, function (channel, error) {
      if (error) {
-         console.error(error);
          return;
      }
 
      channel.enter(function(response, error){
          if (error) {
-             console.error(error);
              return;
          } else {
            global.currentChannel = channel
@@ -82,7 +77,6 @@ export default class Conversations extends Component {
 
  render() {
    const dataSource = this.state.dataSource.cloneWithRows(this.state.conversations || [])
-   console.log(dataSource)
    return (
      <View style={styles.listContainer}>
       <ListView
@@ -101,7 +95,8 @@ export default class Conversations extends Component {
         </TouchableOpacity>
         }
       />
-      <View style={{flex: 1}}>
+
+      <View style={{flexShrink: 3}}>
        <NavMenu navigator={this.props.navigator}/>
       </View>
      </View>
@@ -135,6 +130,7 @@ const styles = StyleSheet.create({
     height: 50
   },
   listIcon: {
+    color: '#00b0ff',
     justifyContent: 'flex-start',
     color: '#00b0ff',
     paddingLeft: 15,

@@ -115,8 +115,6 @@ export default class Contacts extends Component {
     .then((response) => response.json())
     .then((responseJson) => {
       if (responseJson) {
-        console.log("checker");
-        console.log(responseJson);
         debugger
 
 
@@ -142,20 +140,14 @@ export default class Contacts extends Component {
         console.error("bad");
         sb.OpenChannel.createChannel("rand", "", "", [sb.currentUser.userId], function (channel, error) {
           _self.setState({channel: channel})
-          console.log(channel)
           global.currentChannel = channel
-          console.log("in here")
-          console.log(channel.url)
 
             if (error) {
-                console.log("error");
                 return;
             }
             channel.enter(function(response, error){
               console.log("now here")
                 if (error) {
-                    console.log(error);
-                    console.log("error2");
                     return;
                 }
                 fetch('https://temo-api.herokuapp.com/conversations', {
@@ -170,11 +162,8 @@ export default class Contacts extends Component {
               .then((response) => response.json())
               .then((responseJson) => {
                 if (responseJson) {
-                  console.log("good");
-                  console.log(responseJson);
                   _self.props.navigator.push({name: 'chat', channel: channel.url});
                 } else {
-                  console.error("bad");
                 }
 
               })
