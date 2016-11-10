@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     height: 50
   },
   listIcon: {
+    color: '#00b0ff',
     justifyContent: 'flex-start',
     paddingLeft: 15,
     paddingRight: 15,
