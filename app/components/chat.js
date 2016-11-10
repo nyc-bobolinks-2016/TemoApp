@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Dimensions,
+  Modal,
 } from 'react-native';
 
 
@@ -135,24 +136,24 @@ export default class Chat extends Component {
    const data = this.state.dataSource.cloneWithRows(this.state.messageList || [])
 
    return (
-     <View style={styles.container}>
+     <View style={styles.outerContainer}>
         <TouchableHighlight
-        underlayColor={'#4e4273'}
-        onPress={this.onBackPress}
-        style={{marginLeft: 15}}
+          underlayColor={'#4e4273'}
+          onPress={this.onBackPress}
+          style={{marginLeft: 15}}
         >
         <Text style={{color: "#000"}}>&lt; Back</Text>
         </TouchableHighlight>
         <Text>Chat</Text>
-        <ListView
-        enableEmptySections
-        dataSource={data}
-        renderRow={(rowData, sectionID, rowID) => (
-          <Text>{rowData}</Text>
+          <ListView
+            enableEmptySections
+            dataSource={data}
+            renderRow={(rowData, sectionID, rowID) => (
+            <Text>{rowData}</Text>
         )}
         />
        <TextInput
-         style={{flex: 2, borderWidth: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F5FCFF' }}
+         style={styles.textInput}
          value={this.state.message}
          onKeyPress={this.handleKey.bind(this)}
          onChangeText={this.handleChange.bind(this)}
@@ -161,8 +162,8 @@ export default class Chat extends Component {
         {Math.floor(this.state.percentage * 100)}
        </Text>
        <TouchableHighlight
-        underlayColor={'#4e4273'}
-        onPress={() => this.onSendPress()}
+         underlayColor={'#4e4273'}
+         onPress={() => this.onSendPress()}
         >
         <Text style={styles.sendLabel}>send</Text>
        </TouchableHighlight>
@@ -177,20 +178,27 @@ export default class Chat extends Component {
 }
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    paddingHorizontal: 20,
+    paddingTop: 20,
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  textInput: {
+    borderRadius: 5,
+    borderWidth: 1,
+    height: 44,
+    paddingHorizontal: 10,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  segment: {
+    marginBottom: 10,
   },
+  closeButton: {
+    position: 'absolute',
+    top: 30,
+    left: 10,
+  }
 });
