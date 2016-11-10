@@ -130,6 +130,8 @@ export default class Contacts extends Component {
             .then((responseJson) => {
               if (responseJson) {
                 console.log("good");
+                console.log(responseJson);
+                debugger
                 _self.props.navigator.push({name: 'chat', channel: channel.url});
               } else {
                 console.error("bad");
