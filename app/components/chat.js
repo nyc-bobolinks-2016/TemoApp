@@ -164,7 +164,7 @@ export default class Chat extends Component {
          onKeyPress={this.handleKey.bind(this)}
          onChangeText={this.handleChange.bind(this)}
        />
-       <Text style={{padding: 50}}>
+       <Text style={{color: "#e040fb", height: 20, padding: 50}}>
         {Math.floor(this.state.percentage * 100)}%
        </Text>
        <TouchableHighlight

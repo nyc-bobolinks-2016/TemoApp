@@ -88,17 +88,18 @@ export default class Contacts extends Component {
                 style={styles.listItem}
                 onPress={() => this.handleContactChoice(rowData, rowData.givenName)}
               >
-                <Text style={{flex: 1, fontSize: 30, color: '#00b0ff', fontFamily: 'Avenir'}}>
+                <Text style={{flex: 1, fontSize: 30, color: '#00b0ff', fontWeight: "200", fontFamily: 'AppleSDGothicNeo-Thin'}}>
                   {rowData.givenName}
                 </Text>
               </TouchableOpacity>
           )}
         />
+      <View style={{flex: 1}}>
+       <NavMenu navigator={this.props.navigator}/>
+      </View>
       </View>
    );
   }
-
-
   onContactPress(usertwo_phone, secondUser){
     global.secondUser = secondUser
     global.userTwo = usertwo_phone
@@ -114,21 +115,13 @@ export default class Contacts extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      if (responseJson) {
-        debugger
-
-
+      if (responseJson.channel_url) {
         global.currentChannel = responseJson.channel
-
         sb.OpenChannel.getChannel(currentChannel.channel_url, function (channel, error) {
          if (error) {
-             console.error(error);
-             return;
          }
-
          channel.enter(function(response, error){
              if (error) {
-                 console.error(error);
              } else {
                global.currentChannel = channel
                _self.props.navigator.push({name: 'chat', channel: channel.url});
@@ -136,19 +129,14 @@ export default class Contacts extends Component {
            });
          });
       } else {
-        debugger
-        console.error("bad");
         sb.OpenChannel.createChannel("rand", "", "", [sb.currentUser.userId], function (channel, error) {
           _self.setState({channel: channel})
           global.currentChannel = channel
-
             if (error) {
-                return;
             }
             channel.enter(function(response, error){
               console.log("now here")
                 if (error) {
-                    return;
                 }
                 fetch('https://temo-api.herokuapp.com/conversations', {
                   method: 'post',
@@ -171,10 +159,6 @@ export default class Contacts extends Component {
         });
       }
     })
-
-
-
-
     }
   }
 
@@ -184,14 +168,14 @@ export default class Contacts extends Component {
       top: 10,
       flex: 11,
       justifyContent: 'center',
-      backgroundColor: '#e0e0e0',
+      backgroundColor: '#eeeeee',
     },
     listItem: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#e0e0e0',
+      backgroundColor: '#eeeeee',
       borderBottomWidth: 0.5,
       borderColor: '#757575',
       padding: 5,

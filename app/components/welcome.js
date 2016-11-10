@@ -94,15 +94,6 @@ export default class Signup extends Component {
 
 
  render() {
-  var Contacts = require('react-native-contacts')
-
-  Contacts.getAll((err, contacts) => {
-    if(err && err.type === 'permissionDenied'){
-
-    } else {
-    }
-  })
-
    return (
     <View style={styles.container}>
       <Text style={styles.header}>
@@ -136,7 +127,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#eeeeee',
     margin: 10,
   },
   header: {
@@ -147,8 +138,10 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   button: {
-    fontSize: 20,
+    fontSize: 30,
     color: '#00b0ff',
+    fontWeight: "100",
+    fontFamily: 'AppleSDGothicNeo-Thin',
     margin: 5,
   },
   textInput: {
@@ -157,11 +150,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 240,
     height: 40,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#757575',
     marginLeft: 67,
     marginBottom: 3,
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: '#e3f2fd'
   }
 });

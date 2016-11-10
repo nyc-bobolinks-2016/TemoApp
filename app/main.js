@@ -48,9 +48,26 @@ export default class Main extends Component {
     render() {
       return (
         <Navigator
-          style={{flex: 1, backgroundColor: '#e0e0e0'}}
+
+
+        navigationBar={
+             <Navigator.NavigationBar
+               routeMapper={{
+                 LeftButton: (route, navigator, index, navState) =>
+                  { return (<Text>Contacts</Text>); },
+                 RightButton: (route, navigator, index, navState) =>
+                   { return (<Text>Messages</Text>); },
+                 Title: (route, navigator, index, navState) =>
+                   { return (<Text>Temo</Text>); },
+               }}
+             />
+          }
+
+
+          style={{flex: 1, backgroundColor: '#eeeeee'}}
           initialRoute = {{name: 'welcome'}}
           renderScene = {this.renderScene}
+
         />
       );
     }
@@ -61,7 +78,7 @@ export default class Main extends Component {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#e0e0e0',
+      backgroundColor: '#eeeeee',
     },
     welcome: {
       fontSize: 20,

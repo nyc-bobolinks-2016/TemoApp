@@ -96,7 +96,7 @@ export default class Conversations extends Component {
         }
       />
 
-      <View style={{flexShrink: 3}}>
+      <View style={{flex: 1}}>
        <NavMenu navigator={this.props.navigator}/>
       </View>
      </View>
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#eeeeee',
   },
   listContainer: {
     top: 10,
@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
+    backgroundColor: '#eeeeee',
     alignItems: 'center',
-    backgroundColor: '#e0e0e0',
     borderBottomWidth: 0.5,
     borderColor: '#757575',
     padding: 5,
