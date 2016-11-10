@@ -21,6 +21,7 @@ import NavMenu from './navMenu';
 export default class Contacts extends Component {
   constructor() {
     super();
+    global.currentChannel = ''
     sb = SendBird.getInstance();
     this.state = {
       dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
@@ -78,15 +79,18 @@ export default class Contacts extends Component {
   render() {
     const dataSource = this.state.dataSource.cloneWithRows(this.state.contactList || [])
     return (
-      <View style={styles.container}>
+      <View style={styles.listContainer}>
         <ListView
           enableEmptySections
           dataSource={dataSource}
           renderRow={(rowData, sectionID, rowID) => (
               <TouchableOpacity
+                style={styles.listItem}
                 onPress={() => this.handleContactChoice(rowData)}
               >
-                <Text style={{ fontSize: 50, borderWidth: 1 }}>{rowData.familyName}</Text>
+                <Text style={{fontSize: 30, color: '#00b0ff', fontFamily: 'Avenir'}}>
+                  {rowData.givenName}
+                </Text>
               </TouchableOpacity>
           )}
         />
@@ -95,75 +99,120 @@ export default class Contacts extends Component {
   }
 
 
-    onContactPress(usertwo_phone){
-      global.userTwo = usertwo_phone
-      var _self = this
-      sb.OpenChannel.createChannel("rand", "", "", [sb.currentUser.userId], function (channel, error) {
-        _self.setState({channel: channel})
-        console.log(channel)
-        global.currentChannel = channel
-        console.log("in here")
-        console.log(channel.url)
+  onContactPress(usertwo_phone){
+    global.userTwo = usertwo_phone
+    var _self = this
+
+      fetch('https://temo-api.herokuapp.com/conversations', {
+        method: 'post',
+        headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
+        body: JSON.stringify({
+        user_one: currentUser,
+        user_two: usertwo_phone,
+      })
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      if (responseJson) {
+        console.log("checker");
+        console.log(responseJson);
+        debugger
 
 
-          if (error) {
-              console.log("error");
-              return;
-          }
-          channel.enter(function(response, error){
-            console.log("now here")
-              if (error) {
-                  console.log(error);
-                  console.log("error2");
-                  return;
-              }
-              fetch('https://temo-api.herokuapp.com/conversations', {
-                method: 'post',
-                headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
-                body: JSON.stringify({
-                channel_url: channel,
-                user_one: sb.currentUser.nickname,
-                user_two: usertwo_phone,
+        global.currentChannel = responseJson.channel.channel_url
+
+        sb.OpenChannel.getChannel(currentChannel, function (channel, error) {
+         if (error) {
+             console.error(error);
+             return;
+         }
+
+         channel.enter(function(response, error){
+             if (error) {
+                 console.error(error);
+             } else {
+               global.currentChannel = channel
+               _self.props.navigator.push({name: 'chat', channel: channel.url});
+             }
+           });
+         });
+      } else {
+        debugger
+        console.error("bad");
+        sb.OpenChannel.createChannel("rand", "", "", [sb.currentUser.userId], function (channel, error) {
+          _self.setState({channel: channel})
+          console.log(channel)
+          global.currentChannel = channel
+          console.log("in here")
+          console.log(channel.url)
+
+            if (error) {
+                console.log("error");
+                return;
+            }
+            channel.enter(function(response, error){
+              console.log("now here")
+                if (error) {
+                    console.log(error);
+                    console.log("error2");
+                    return;
+                }
+                fetch('https://temo-api.herokuapp.com/conversations', {
+                  method: 'post',
+                  headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
+                  body: JSON.stringify({
+                  channel_url: channel,
+                  user_one: currentUser,
+                  user_two: usertwo_phone,
+                })
               })
-            })
-            .then((response) => response.json())
-            .then((responseJson) => {
-              if (responseJson) {
-                console.log("good");
-                console.log(responseJson);
-                debugger
-                _self.props.navigator.push({name: 'chat', channel: channel.url});
-              } else {
-                console.error("bad");
-              }
+              .then((response) => response.json())
+              .then((responseJson) => {
+                if (responseJson) {
+                  console.log("good");
+                  console.log(responseJson);
+                  _self.props.navigator.push({name: 'chat', channel: channel.url});
+                } else {
+                  console.error("bad");
+                }
 
-            })
-          });
-      });
+              })
+            });
+        });
+      }
+    })
+
+
+
+
+
+
     }
   }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  listView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
-});
+  const styles = StyleSheet.create({
+    listContainer: {
+      top: 10,
+      flex: 11,
+      justifyContent: 'center',
+      backgroundColor: '#e0e0e0',
+    },
+    listItem: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#e0e0e0',
+      borderBottomWidth: 0.5,
+      borderColor: '#757575',
+      padding: 5,
+      height: 50,
+      padding: 5,
+    },
+    listIcon: {
+      justifyContent: 'flex-start',
+      paddingLeft: 15,
+      paddingRight: 15,
+    }
+  });

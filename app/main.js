@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Navigator
+  Navigator,
 } from 'react-native';
 
 import Temo from './components/temo';
@@ -48,8 +48,8 @@ export default class Main extends Component {
     render() {
       return (
         <Navigator
-          style={{flex: 1, backgroundColor: "blue"}}
-          initialRoute = {{name: 'signup'}}
+          style={{flex: 1, backgroundColor: '#e0e0e0'}}
+          initialRoute = {{name: 'welcome'}}
           renderScene = {this.renderScene}
         />
       );
@@ -61,7 +61,7 @@ export default class Main extends Component {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#F5FCFF',
+      backgroundColor: '#e0e0e0',
     },
     welcome: {
       fontSize: 20,

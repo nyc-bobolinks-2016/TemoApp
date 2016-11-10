@@ -13,6 +13,7 @@ import {
 
 
 import SendBird from 'sendbird';
+import NavMenu from './navMenu';
 const PULLDOWN_DISTANCE = 40;
 const Contacts = require('react-native-contacts');
 
@@ -46,11 +47,10 @@ export default class Conversations extends Component {
     .then((response) => response.json())
     .then((responseJSON) => {
       console.log(responseJSON)
-      this.setState({conversations: responseJSON})
+      this.setState({conversations: responseJSON.conversations})
     })
     .catch((error)=>{
       console.log("Api call error");
-      alert(error.message);
     });
   }
 
@@ -83,45 +83,59 @@ export default class Conversations extends Component {
    const dataSource = this.state.dataSource.cloneWithRows(this.state.conversations || [])
    console.log(dataSource)
    return (
-     <View style={styles.container}>
+     <View style={styles.listContainer}>
       <ListView
+      enableEmptySections
       conversations={this.state.conversations}
       onEndReachedThreshold={PULLDOWN_DISTANCE}
       dataSource={dataSource}
       renderRow={(rowData, sectionID, rowID) =>
         <TouchableOpacity
-          onPress={() => this.onConversationPress(rowData.channel_url)}
+          style={styles.listItem}
+          onPress={() => this.onConversationPress(rowData[0])}
         >
-        <Text style={{padding: 10}}>{rowData.channel_url}</Text>
+        <Text style={styles.listIcon}>
+          {rowData[1][0].username}
+        </Text>
         </TouchableOpacity>
         }
       />
+      <View>
+       <NavMenu navigator={this.props.navigator}/>
+      </View>
      </View>
    );
  }
 }
 
 
- const styles = StyleSheet.create({
-   container: {
-     flex: 1,
-     justifyContent: 'center',
-     alignItems: 'center',
-     backgroundColor: 'white',
-   },
-   welcome: {
-     fontSize: 20,
-     textAlign: 'center',
-     margin: 10,
-   },
-   instructions: {
-     textAlign: 'center',
-     color: '#333333',
-     marginBottom: 5,
-   },
-   listView: {
-     flex: 1,
-     justifyContent: 'center',
-     alignItems: 'center',
-   }
- });
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e0e0e0',
+  },
+  listContainer: {
+    top: 10,
+    flex: 11,
+    justifyContent: 'center',
+  },
+  listItem: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#e0e0e0',
+    borderBottomWidth: 0.5,
+    borderColor: '#757575',
+    padding: 5,
+    height: 50
+  },
+  listIcon: {
+    justifyContent: 'flex-start',
+    paddingLeft: 15,
+    paddingRight: 15,
+  }
+});
