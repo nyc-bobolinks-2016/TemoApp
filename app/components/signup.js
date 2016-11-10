@@ -8,125 +8,39 @@ import {
   View
 } from 'react-native';
 
-import SendBird from 'sendbird'
-
-export default class Signup extends Component {
-  constructor() {
-    super();
-    this.state = {
-      username: '',
-      phone: ''
-    }
-  }
+import Login from './login';
+import Signup from './signup';
 
 
-  handleChangeUsername(value) {
-    this.setState({username: value})
-    global.currentUser = value
-  }
+export default class Welcome extends Component {
 
-  handleChangePhone(value) {
-    this.setState({phone: value})
-    global.currentPhone = value
-
-  }
-
-  handleSignup() {
-    sb = new SendBird({
-      appId: '6042A607-C497-460C-B8E8-9934DF5D8529'
+  navigate(routeName) {
+    this.props.navigator.push({
+      name : routeName
     })
-    var _self = this
-    sb.connect(_self.state.phone, function (user, error) {});
-
-    sb.updateCurrentUserInfo(this.state.username, '', function(response, error) {
-    });
-
-    fetch('https://temo-api.herokuapp.com/users', {
-      method: 'post',
-      headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
-      body: JSON.stringify({
-      username: this.state.username,
-      phone: this.state.phone
-    })
-  })
-  .then((response) => response.json())
-  .then((responseJson) => {
-    if (responseJson.created_at != null) {
-      console.log(responseJson)
-      this.props.navigator.push({name: 'contacts'})
-    } else {
-      console.log("no  invalid phone number")
-    }
-  })
   }
 
-  handleLogin() {
-    sb = new SendBird({
-      appId: '6042A607-C497-460C-B8E8-9934DF5D8529'
-    })
-    var _self = this
-    sb.connect(_self.state.phone, function (user, error) {});
-
-    sb.updateCurrentUserInfo(this.state.username, '', function(response, error) {
-    });
-
-    fetch('https://temo-api.herokuapp.com/users/login', {
-      method: 'post',
-      headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
-      body: JSON.stringify({
-      username: this.state.username,
-      phone: this.state.phone
-    })
-  })
-  .then((response) => response.json())
-  .then((responseJson) => {
-    if (responseJson.created_at) {
-      console.log(responseJson)
-      this.props.navigator.push({name: 'temo'})
-    } else {
-      console.log("no  invalid phone number")
-    }
-
-  })
+  render() {
+    return (
+    <View style={styles.container}>
+        <Text style={{ fontSize: 50}}>
+          Temo
+        </Text>
+        <TouchableOpacity
+          onPress={this.navigate.bind(this, 'login')}
+          text='Login'
+        >
+         <Text style={{ fontSize: 20, color: "grey"}}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={this.navigate.bind(this, 'signup')}
+          text='Signup'
+        >
+         <Text style={{ fontSize: 20, color: "grey"}}>Signup</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
-
-
- render() {
-  var Contacts = require('react-native-contacts')
-
-  Contacts.getAll((err, contacts) => {
-    if(err && err.type === 'permissionDenied'){
-
-    } else {
-    }
-  })
-
-   return (
-     <View style={styles.container}>
-       <Text style={{ fontSize: 50}}>
-        Temo
-       </Text>
-       <TextInput
-         style={{height: 40, borderWidth: 1}}
-         onChangeText={this.handleChangeUsername.bind(this)}
-         value={this.state.username}
-         />
-       <TextInput
-         style={{height: 40, borderWidth: 1}}
-         onChangeText={this.handleChangePhone.bind(this)}
-         value={this.state.phone}
-         />
-
-       <TouchableOpacity onPress={this.handleLogin.bind(this)}>
-        <Text style={{ fontSize: 20, color: "grey"}}>Login</Text>
-       </TouchableOpacity>
-
-       <TouchableOpacity onPress={this.handleSignup.bind(this)}>
-        <Text style={{ fontSize: 20, color: "grey"}}>Sign up</Text>
-       </TouchableOpacity>
-     </View>
-   );
- }
 }
 
 const styles = StyleSheet.create({
@@ -134,7 +48,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#F5FCFF',
   },
   welcome: {
     fontSize: 20,

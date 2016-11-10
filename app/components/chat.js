@@ -172,7 +172,7 @@ export default class Chat extends Component {
 
  onBackPress() {
    sb.disconnect();
-   _self.props.navigator.pop();
+   this.props.navigator.pop();
  }
 }
 

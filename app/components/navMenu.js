@@ -24,15 +24,29 @@ export default class NavMenu extends Component {
     })
   }
 
+  backPress() {
+    if (lastRoute && lastRoute == "contacts") {
+    global.lastRoute = ""
+    this.props.navigator.pop()
+    }
+  }
+
+  forwardPress() {
+    global.lastRoute = "contacts"
+
+    this.props.navigator.push({
+      name: 'contacts'
+    })
+  }
+
   render(){
     return(
       <View style={styles.container}>
-        <Text style={{ fontSize: 50}}>Temo</Text>
         <NavButton
-          onPress={this.navigate.bind(this, 'conversations')}
+          onPress={() => this.backPress()}
           text='Conversation'/>
         <NavButton
-          onPress={this.navigate.bind(this, 'contacts')}
+          onPress={() => this.forwardPress()}
           text='Contacts' />
       </View>
     )
