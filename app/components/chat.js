@@ -70,6 +70,7 @@ export default class Chat extends Component {
     var messages = []
 
     currentChannel.sendUserMessage(this.state.message, '', function(message, error){
+      console.log("helloooo from here")
         if (error) {
             console.error(error);
             return;
@@ -78,7 +79,7 @@ export default class Chat extends Component {
         console.log("message", message.message);
         messages.push(message.message)
     });
-
+    
     this.setState({message: '', messageList: this.state.messageList.concat([messages])});
   }
 

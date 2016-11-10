@@ -121,7 +121,7 @@ export default class Contacts extends Component {
                 method: 'post',
                 headers: { 'Accept': 'application/json','Content-Type': 'application/json'},
                 body: JSON.stringify({
-                channel_url: channel.url,
+                channel_url: channel,
                 user_one: sb.currentUser.nickname,
                 user_two: usertwo_phone,
               })
@@ -130,7 +130,6 @@ export default class Contacts extends Component {
             .then((responseJson) => {
               if (responseJson) {
                 console.log("good");
-
                 _self.props.navigator.push({name: 'chat', channel: channel.url});
               } else {
                 console.error("bad");

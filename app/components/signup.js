@@ -27,6 +27,8 @@ export default class Signup extends Component {
 
   handleChangePhone(value) {
     this.setState({phone: value})
+    global.currentPhone = value
+
   }
 
   handleSignup() {
@@ -55,7 +57,6 @@ export default class Signup extends Component {
     } else {
       console.log("no  invalid phone number")
     }
-
   })
   }
 
@@ -81,7 +82,7 @@ export default class Signup extends Component {
   .then((responseJson) => {
     if (responseJson.created_at) {
       console.log(responseJson)
-      this.props.navigator.push({name: 'contacts'})
+      this.props.navigator.push({name: 'temo'})
     } else {
       console.log("no  invalid phone number")
     }

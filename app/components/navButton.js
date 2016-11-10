@@ -23,16 +23,12 @@ export default class NavButton extends Component {
 
 const styles = StyleSheet.create({
   button:{
+    height: 50,
     backgroundColor: 'grey',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    padding: 15,
   },
   buttonText: {
     color: "white",
-    fontSize: 15,
+    fontSize: 30,
     fontWeight: '500',
   }
 })
