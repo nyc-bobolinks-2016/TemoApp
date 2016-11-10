@@ -41,6 +41,15 @@ export default class Chat extends Component {
   };
 
   componentDidMount() {
+    var ChannelHandler = new sb.ChannelHandler();
+    var _self = this
+    var __messages = []
+    ChannelHandler.onMessageReceived = function(channel, message){
+      console.log(channel, message)
+      __messages.push(message)
+      _self.setState({ messageList: _self.state.messageList.concat(message.message)});
+    }
+    sb.addChannelHandler("MessageHandler", ChannelHandler)
     this.setState({dataSource: this.state.dataSource.cloneWithRows(this.state.messageList || [])})
   }
 
@@ -79,7 +88,7 @@ export default class Chat extends Component {
         console.log("message", message.message);
         messages.push(message.message)
     });
-    
+
     this.setState({message: '', messageList: this.state.messageList.concat([messages])});
   }
 

@@ -46,7 +46,7 @@ export default class Conversations extends Component {
     .then((response) => response.json())
     .then((responseJSON) => {
       console.log(responseJSON)
-      this.setState({conversations: responseJSON.conversations})
+      this.setState({conversations: responseJSON})
     })
     .catch((error)=>{
       console.log("Api call error");
@@ -81,6 +81,7 @@ export default class Conversations extends Component {
 
  render() {
    const dataSource = this.state.dataSource.cloneWithRows(this.state.conversations || [])
+   console.log(dataSource)
    return (
      <View style={styles.container}>
       <ListView
