@@ -55,8 +55,9 @@ export default class Conversations extends Component {
   }
 
 
-  onConversationPress(url) {
-    var _self = this
+  onConversationPress(url, secondUser) {
+   global.secondUser = secondUser
+   var _self = this
    console.log(url)
    var chs = sb.OpenChannel.createOpenChannelListQuery();
    console.log(chs)
@@ -92,7 +93,7 @@ export default class Conversations extends Component {
       renderRow={(rowData, sectionID, rowID) =>
         <TouchableOpacity
           style={styles.listItem}
-          onPress={() => this.onConversationPress(rowData[0])}
+          onPress={() => this.onConversationPress(rowData[0], rowData[1][0].username)}
         >
         <Text style={styles.listIcon}>
           {rowData[1][0].username}
@@ -100,7 +101,7 @@ export default class Conversations extends Component {
         </TouchableOpacity>
         }
       />
-      <View>
+      <View style={{flex: 1}}>
        <NavMenu navigator={this.props.navigator}/>
       </View>
      </View>
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     top: 10,
-    flex: 11,
+    flex: 1,
     justifyContent: 'center',
   },
   listItem: {
@@ -135,6 +136,7 @@ const styles = StyleSheet.create({
   },
   listIcon: {
     justifyContent: 'flex-start',
+    color: '#00b0ff',
     paddingLeft: 15,
     paddingRight: 15,
   }

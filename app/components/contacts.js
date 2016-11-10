@@ -86,9 +86,9 @@ export default class Contacts extends Component {
           renderRow={(rowData, sectionID, rowID) => (
               <TouchableOpacity
                 style={styles.listItem}
-                onPress={() => this.handleContactChoice(rowData)}
+                onPress={() => this.handleContactChoice(rowData, rowData.givenName)}
               >
-                <Text style={{fontSize: 30, color: '#00b0ff', fontFamily: 'Avenir'}}>
+                <Text style={{flex: 1, fontSize: 30, color: '#00b0ff', fontFamily: 'Avenir'}}>
                   {rowData.givenName}
                 </Text>
               </TouchableOpacity>
@@ -99,7 +99,8 @@ export default class Contacts extends Component {
   }
 
 
-  onContactPress(usertwo_phone){
+  onContactPress(usertwo_phone, secondUser){
+    global.secondUser = secondUser
     global.userTwo = usertwo_phone
     var _self = this
 
@@ -119,9 +120,9 @@ export default class Contacts extends Component {
         debugger
 
 
-        global.currentChannel = responseJson.channel.channel_url
+        global.currentChannel = responseJson.channel
 
-        sb.OpenChannel.getChannel(currentChannel, function (channel, error) {
+        sb.OpenChannel.getChannel(currentChannel.channel_url, function (channel, error) {
          if (error) {
              console.error(error);
              return;
@@ -181,8 +182,6 @@ export default class Contacts extends Component {
         });
       }
     })
-
-
 
 
 
