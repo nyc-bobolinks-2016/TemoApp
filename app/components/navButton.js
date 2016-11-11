@@ -23,16 +23,21 @@ export default class NavButton extends Component {
 
 const styles = StyleSheet.create({
   button:{
-    height: 15,
-    backgroundColor: '#eeeeee',
-    borderWidth: 1,
-    borderColor: '#eeeeee',
-    borderRadius: 10,
+    height: 20,
+    marginBottom: 0,
   },
   buttonText: {
     color: "#00b0ff",
+    width: 190,
     fontSize: 30,
+    borderWidth: 1,
+    marginRight: 2,
+    marginBottom: 0,
+    backgroundColor: 'white',
+    borderColor: 'white',
+    borderRadius: 5,
     fontWeight: "100",
+    textAlign: 'center',
     fontFamily: 'AppleSDGothicNeo-Thin',
   }
 })

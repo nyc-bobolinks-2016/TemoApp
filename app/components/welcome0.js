@@ -14,6 +14,7 @@ import NavMenu from './navMenu';
 export default class Signup extends Component {
   constructor() {
     super();
+    console.disableYellowBox = true;
     global.lastRoute = ""
     this.state = {
       username: '',
@@ -107,7 +108,7 @@ export default class Signup extends Component {
       />
       <TextInput
         style={styles.textInput}
-        placeholder={'Phone Number'}
+        placeholder={'Password'}
         onChangeText={this.handleChangePhone.bind(this)}
         value={this.state.phone}
       />
@@ -136,7 +137,6 @@ const styles = StyleSheet.create({
     fontSize: 100,
     color: '#00b0ff',
     margin: 60,
-
     fontFamily: 'SnellRoundhand-Bold',
     marginBottom: 40,
   },

@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Navigator,
+  Navigator
 } from 'react-native';
 
 import Temo from './components/temo';
@@ -48,26 +48,9 @@ export default class Main extends Component {
     render() {
       return (
         <Navigator
-
-
-        navigationBar={
-             <Navigator.NavigationBar
-               routeMapper={{
-                 LeftButton: (route, navigator, index, navState) =>
-                  { return (<Text>Contacts</Text>); },
-                 RightButton: (route, navigator, index, navState) =>
-                   { return (<Text>Messages</Text>); },
-                 Title: (route, navigator, index, navState) =>
-                   { return (<Text>Temo</Text>); },
-               }}
-             />
-          }
-
-
-          style={{flex: 1, backgroundColor: '#eeeeee'}}
+          style={{flex: 1, backgroundColor: "#e0e0e0"}}
           initialRoute = {{name: 'welcome'}}
           renderScene = {this.renderScene}
-
         />
       );
     }
@@ -78,7 +61,7 @@ export default class Main extends Component {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#eeeeee',
+      backgroundColor: '#F5FCFF',
     },
     welcome: {
       fontSize: 20,

@@ -17,7 +17,7 @@ export default class BackButton extends Component {
       <NavButton
         onPress={this.props.navigate.bind(this)}
         text='Back'
-        style={{ fontSize: 20, color: "grey"}}
+        style={{ fontSize: 20}}
       />
     )
   }

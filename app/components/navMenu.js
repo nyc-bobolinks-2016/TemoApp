@@ -44,7 +44,7 @@ export default class NavMenu extends Component {
       <View style={styles.container}>
         <NavButton
           onPress={() => this.backPress()}
-          text='Conversation'/>
+          text='Messages'/>
         <NavButton
           onPress={() => this.forwardPress()}
           text='Contacts' />
@@ -55,13 +55,15 @@ export default class NavMenu extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
+    position: 'absolute', left: 0, right: 0, bottom: 50,
+    height: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#e0e0e0',
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 40,
     textAlign: 'center',
     margin: 10,
   }

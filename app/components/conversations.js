@@ -20,6 +20,7 @@ const Contacts = require('react-native-contacts');
 export default class Conversations extends Component {
   constructor() {
     super();
+    console.disableYellowBox = true;
     sb = SendBird.getInstance();
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
     this.state = {
@@ -80,6 +81,7 @@ export default class Conversations extends Component {
    return (
      <View style={styles.listContainer}>
       <ListView
+      style={{height: 100}}
       enableEmptySections
       conversations={this.state.conversations}
       onEndReachedThreshold={PULLDOWN_DISTANCE}
@@ -96,7 +98,7 @@ export default class Conversations extends Component {
         }
       />
 
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, height: 5}}>
        <NavMenu navigator={this.props.navigator}/>
       </View>
      </View>
@@ -111,7 +113,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eeeeee',
+    backgroundColor: '#e0e0e0',
+
   },
   listContainer: {
     top: 10,
@@ -121,16 +124,16 @@ const styles = StyleSheet.create({
   listItem: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: '#eeeeee',
-    alignItems: 'center',
+    backgroundColor: '#e0e0e0',
     borderBottomWidth: 0.5,
     borderColor: '#757575',
     padding: 5,
-    height: 50
+    fontSize: 30,
+    height: 50,
   },
   listIcon: {
     color: '#00b0ff',
+    textAlign: 'left',
     justifyContent: 'flex-start',
     color: '#00b0ff',
     paddingLeft: 15,

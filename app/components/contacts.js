@@ -21,6 +21,7 @@ import NavMenu from './navMenu';
 export default class Contacts extends Component {
   constructor() {
     super();
+    console.disableYellowBox = true;
     global.currentChannel = ''
     sb = SendBird.getInstance();
     this.state = {
@@ -94,7 +95,7 @@ export default class Contacts extends Component {
               </TouchableOpacity>
           )}
         />
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, height: 20}}>
        <NavMenu navigator={this.props.navigator}/>
       </View>
       </View>
@@ -168,14 +169,14 @@ export default class Contacts extends Component {
       top: 10,
       flex: 11,
       justifyContent: 'center',
-      backgroundColor: '#eeeeee',
+      backgroundColor: '#e0e0e0',
     },
     listItem: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#eeeeee',
+      backgroundColor: '#e0e0e0',
       borderBottomWidth: 0.5,
       borderColor: '#757575',
       padding: 5,
