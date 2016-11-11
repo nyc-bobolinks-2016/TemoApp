@@ -33,7 +33,9 @@ export default class Chat extends Component {
       message: '',
       messageList: [],
       dataSource: ds.cloneWithRows([]),
+      userMessage: true,
     }
+    messageCheck = this.state.userMessage
   }
 
   navigate(routeName) {
@@ -73,7 +75,7 @@ export default class Chat extends Component {
             _messageList.push(msg.payload);
           }
         });
-        _self.setState({ messageList: _messageList.concat(_self.state.messageList) });
+        _self.setState({ messageList: _messageList.concat(_self.state.messageList), userMessage: _self.state.userMessage = false });
       },
       errorFunc: (status, error) => {
         console.log(status, error);
@@ -98,7 +100,7 @@ export default class Chat extends Component {
     } else {
       var dir = 'right'
     }
-    this.setState({align: dir, message: '', messageList: this.state.messageList.concat([messages])});
+    this.setState({align: dir, message: '', messageList: this.state.messageList.concat([messages]), userMessage: this.state.userMessage = false});
   }
 
   handleKey(e) {
@@ -151,6 +153,18 @@ export default class Chat extends Component {
       }
   }
 
+
+  renderRow(rowData, sectionID, rowID){
+      if(messageCheck){
+    return <Text style={styles.rightContain}>{rowData}</Text>
+      } else {
+     return <Text style={styles.leftContain}>{rowData}</Text>
+     }
+  }
+
+
+
+
  render() {
    const data = this.state.dataSource.cloneWithRows(this.state.messageList || [])
    return (
@@ -168,9 +182,7 @@ export default class Chat extends Component {
               style={{backgroundColor: '#e3f2fd'}}
               enableEmptySections
               dataSource={data}
-              renderRow={(rowData, sectionID, rowID) => (
-              <Text>{rowData}</Text>
-          )}
+              renderRow={this.renderRow}
           />
           </View>
             <View style={{backgroundColor: this.state.color , width: this.state.width*4, height: 5}}>
@@ -233,5 +245,29 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 30,
     left: 10,
-  }
+  },
+  rightContain: {
+    flex: 0,
+    // backgroundColor: '#90caf9',
+    justifyContent: 'flex-end',
+    borderColor: '#c5cae9',
+    flexDirection: 'column',
+    borderWidth:4,
+    borderRadius: 10,
+    width: 200,
+    padding: 5,
+    margin: 3,
+  },
+  leftContain: {
+    flex: 0,
+    // backgroundColor: '#ce93d8',
+    borderColor: '#0277bd',
+    justifyContent: 'flex-end',
+    flexDirection: 'column',
+    borderWidth:4,
+    borderRadius: 10,
+    width: 200,
+    padding: 5,
+    margin: 3,
+  },
 });
