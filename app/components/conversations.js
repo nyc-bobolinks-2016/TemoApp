@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-
+import strftime from 'strftime';
 import SendBird from 'sendbird';
 import NavMenu from './navMenu';
 const PULLDOWN_DISTANCE = 40;
@@ -91,8 +91,8 @@ export default class Conversations extends Component {
           style={styles.listItem}
           onPress={() => this.onConversationPress(rowData[0], rowData[1][0].username)}
         >
-        <Text style={styles.listIcon}>
-          {rowData[1][0].username}
+        <Text style={{flex: 1, fontSize: 20, color: '#00b0ff', fontWeight: "100", fontFamily: 'AppleSDGothicNeo-Thin'}}>
+          {rowData[1][0].username} - {strftime('%A')}
         </Text>
         </TouchableOpacity>
         }
@@ -119,17 +119,18 @@ const styles = StyleSheet.create({
   listContainer: {
     top: 10,
     flex: 1,
-    justifyContent: 'center',
   },
   listItem: {
     flex: 1,
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: '#e0e0e0',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 1,
     borderColor: '#757575',
-    padding: 5,
-    fontSize: 30,
+    padding: 4,
     height: 50,
+    padding: 5,
   },
   listIcon: {
     color: '#00b0ff',

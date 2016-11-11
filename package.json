@@ -11,7 +11,8 @@
     "react-native": "0.36.1",
     "react-native-contacts": "^0.5.2",
     "react-native-keyboard-spacer": "^0.3.0",
-    "sendbird": "^3.0.14"
+    "sendbird": "^3.0.14",
+    "strftime": "^0.9.2"
   },
   "jest": {
     "preset": "jest-react-native"
