@@ -33,7 +33,7 @@ export default class Chat extends Component {
       message: '',
       messageList: [],
       dataSource: ds.cloneWithRows([]),
-      userMessage: true,
+      userMessage: false,
     }
     messageCheck = this.state.userMessage
   }
@@ -74,8 +74,9 @@ export default class Chat extends Component {
           if(sb.isMessage(msg.cmd)) {
             _messageList.push(msg.payload);
           }
+          _self.setState({userMessage: _self.state.userMessage = false, messageList: _messageList.concat(_self.state.messageList)});
+          // , userMessage: _self.state.userMessage = false
         });
-        _self.setState({ messageList: _messageList.concat(_self.state.messageList), userMessage: _self.state.userMessage = false });
       },
       errorFunc: (status, error) => {
         console.log(status, error);
@@ -100,8 +101,9 @@ export default class Chat extends Component {
     } else {
       var dir = 'right'
     }
-    this.setState({align: dir, message: '', messageList: this.state.messageList.concat([messages]), userMessage: this.state.userMessage = false});
+    this.setState({userMessage: this.state.userMessage = true, align: dir, message: '', messageList: this.state.messageList.concat([messages])});
   }
+  // , userMessage: this.state.userMessage = true
 
   handleKey(e) {
     var n = 0
@@ -168,6 +170,7 @@ export default class Chat extends Component {
  render() {
    const data = this.state.dataSource.cloneWithRows(this.state.messageList || [])
    return (
+     <View>
      <View style={styles.outerContainer}>
         <TouchableOpacity
         underlayColor={'#4e4273'}
@@ -205,7 +208,8 @@ export default class Chat extends Component {
            </TouchableOpacity>
          </View>
         </View>
-       <KeyboardSpacer/>
+     </View>
+     <KeyboardSpacer/>
      </View>
    );
  }
