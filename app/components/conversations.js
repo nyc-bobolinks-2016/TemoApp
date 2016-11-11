@@ -38,6 +38,14 @@ export default class Conversations extends Component {
   }
 
   componentWillMount() {
+    Contacts.getAll((err, contacts) => {
+      if(err && err.type === 'permissionDenied'){
+        // x.x
+      } else {
+        console.log(contacts)
+      }
+    })
+
     fetch('https://temo-api.herokuapp.com/users/conversations', {
       method: 'POST',
       headers: { 'Accept': 'application/json','Content-Type': 'application/json' },
