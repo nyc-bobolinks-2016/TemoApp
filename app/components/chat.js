@@ -31,11 +31,12 @@ export default class Chat extends Component {
       percentage: '',
       fullWord: false,
       message: '',
+      userMessages: [],
       messageList: [],
       dataSource: ds.cloneWithRows([]),
       userMessage: false,
     }
-    messageCheck = this.state.userMessage
+    messageCheck = this.state.userMessages
   }
 
   navigate(routeName) {
@@ -74,7 +75,7 @@ export default class Chat extends Component {
           if(sb.isMessage(msg.cmd)) {
             _messageList.push(msg.payload);
           }
-          _self.setState({userMessage: _self.state.userMessage = false, messageList: _messageList.concat(_self.state.messageList)});
+          _self.setState({ messageList: _messageList.concat(_self.state.messageList, userMessage: false,)});
           // , userMessage: _self.state.userMessage = false
         });
       },
@@ -86,6 +87,7 @@ export default class Chat extends Component {
 
   onSendPress() {
     var messages = []
+    _self = this
     currentChannel.sendUserMessage(this.state.message, '', function(message, error){
       console.log("helloooo from here")
         if (error) {
@@ -95,13 +97,14 @@ export default class Chat extends Component {
 
         console.log("message", message.message);
         messages.push(message.message)
+        _self.state.userMessages.push(message.message)
     });
     if (this.state.align == 'right') {
       var dir = 'left'
     } else {
       var dir = 'right'
     }
-    this.setState({userMessage: this.state.userMessage = true, align: dir, message: '', messageList: this.state.messageList.concat([messages])});
+    this.setState({userMessage: true, align: dir, message: '', messageList: this.state.messageList.concat([messages])});
   }
   // , userMessage: this.state.userMessage = true
 
@@ -157,7 +160,7 @@ export default class Chat extends Component {
 
 
   renderRow(rowData, sectionID, rowID){
-      if(messageCheck){
+      if(messageCheck.includes(rowData[0])){
     return <Text style={styles.rightContain}>{rowData}</Text>
       } else {
      return <Text style={styles.leftContain}>{rowData}</Text>
@@ -179,7 +182,7 @@ export default class Chat extends Component {
         >
         <Text style={{color: "#000", padding: 20}}>&lt; Back</Text>
         </TouchableOpacity>
-        <View style={{ height: 500}}>
+        <View style={{ height: 550}}>
           <Text style={{textAlign: 'center'}}>Chat</Text>
             <ListView
               style={{backgroundColor: '#e3f2fd'}}
@@ -222,7 +225,6 @@ export default class Chat extends Component {
 const styles = StyleSheet.create({
   outerContainer: {
     height: 200,
-
   },
   container: {
     justifyContent: 'center',
@@ -252,25 +254,21 @@ const styles = StyleSheet.create({
   },
   rightContain: {
     flex: 0,
-    // backgroundColor: '#90caf9',
     justifyContent: 'flex-end',
-    borderColor: '#c5cae9',
+    borderColor: '#e0e0e0',
     flexDirection: 'column',
     borderWidth:4,
     borderRadius: 10,
-    width: 200,
     padding: 5,
     margin: 3,
   },
   leftContain: {
     flex: 0,
-    // backgroundColor: '#ce93d8',
-    borderColor: '#0277bd',
+    borderColor: '#64b5f6',
     justifyContent: 'flex-end',
     flexDirection: 'column',
     borderWidth:4,
     borderRadius: 10,
-    width: 200,
     padding: 5,
     margin: 3,
   },
