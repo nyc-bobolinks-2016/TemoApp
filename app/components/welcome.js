@@ -5,7 +5,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  Image
 } from 'react-native';
 
 import SendBird from 'sendbird'
@@ -95,7 +96,7 @@ export default class Signup extends Component {
 
  render() {
    return (
-    <View style={styles.container}>
+    <Image source={require('../../images/bg.jpg')} style={styles.container}>
       <Text style={styles.header}>
         Temo
       </Text>
@@ -111,7 +112,6 @@ export default class Signup extends Component {
         onChangeText={this.handleChangePhone.bind(this)}
         value={this.state.phone}
       />
-
       <TouchableOpacity onPress={this.handleLogin.bind(this)}>
         <Text style={styles.button}>Login</Text>
       </TouchableOpacity>
@@ -119,7 +119,7 @@ export default class Signup extends Component {
       <TouchableOpacity onPress={this.handleSignup.bind(this)}>
         <Text style={styles.button}>Sign up</Text>
       </TouchableOpacity>
-    </View>
+    </Image>
    );
  }
 }
@@ -129,23 +129,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: '#e0e0e0',
-    margin: 10,
+    paddingTop: 60,
+
+    width: null,
+    height: null,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
   },
   header: {
-    fontSize: 100,
-    color: '#00b0ff',
+    fontSize: 80,
+    color: '#2196f3',
+    color: 'white',
     margin: 60,
-
-    fontFamily: 'SnellRoundhand-Bold',
+    fontFamily: 'KohinoorBangla-Light',
     marginBottom: 40,
   },
   button: {
     fontSize: 30,
     color: '#00b0ff',
-    fontWeight: "100",
+    fontWeight: "200",
     fontFamily: 'AppleSDGothicNeo-Thin',
     margin: 5,
+
   },
   textInput: {
     padding: 5,
@@ -153,11 +157,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 240,
     height: 40,
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#757575',
     marginLeft: 67,
     marginBottom: 3,
     borderRadius: 5,
-    backgroundColor: '#e3f2fd'
+    backgroundColor: 'rgba(227,242,253, 0.6)'
   }
 });

@@ -48,7 +48,7 @@ export default class Main extends Component {
     render() {
       return (
         <Navigator
-          style={{flex: 1, backgroundColor: "#e0e0e0"}}
+          style={{backgroundColor: '#eeeeee'}}
           initialRoute = {{name: 'welcome'}}
           renderScene = {this.renderScene}
         />

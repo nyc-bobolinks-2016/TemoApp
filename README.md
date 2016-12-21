@@ -14,3 +14,9 @@ First, Clone repository
 3 `npm install`
 
 4 `npm start`
+
+
+<img src="/images/login.png" alt="alt text" width="400" height="700">
+<img src="/images/messages.png" alt="alt text" width="400" height="700">
+<img src="/images/contacts.png" alt="alt text" width="400" height="700">
+<img src="/images/chat.png" alt="alt text" width="400" height="700">
