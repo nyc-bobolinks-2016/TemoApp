@@ -88,8 +88,11 @@ export default class Conversations extends Component {
    const dataSource = this.state.dataSource.cloneWithRows(this.state.conversations || [])
    return (
      <View style={styles.listContainer}>
+       <View style={{ height: 5}}>
+        <NavMenu navigator={this.props.navigator}/>
+       </View>
       <ListView
-      style={{height: 100}}
+      style={{height: 100, top: 57}}
       enableEmptySections
       conversations={this.state.conversations}
       onEndReachedThreshold={PULLDOWN_DISTANCE}
@@ -99,16 +102,34 @@ export default class Conversations extends Component {
           style={styles.listItem}
           onPress={() => this.onConversationPress(rowData[0], rowData[1][0].username)}
         >
-        <Text style={{flex: 1, fontSize: 20, color: '#00b0ff', fontWeight: "100", fontFamily: 'AppleSDGothicNeo-Thin'}}>
-          {rowData[1][0].username} - {strftime('%A')}
-        </Text>
+        <View style={{ marginRight: 5, marginBottom: 10, height: 25}}>
+          <Image source={require('../../images/bg.jpg')} style={styles.userPic}>
+
+          </Image>
+        </View>
+        <View style={{flexDirection: 'column', flex: 1, paddingBottom: 5}}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={{ flex: 2, fontSize: 14, color: '#00b0ff', fontWeight: "600", fontFamily: 'Helvetica-Bold'}}>
+              {rowData[1][0].username}
+            </Text>
+            <Text style={{ flex: 1, fontSize: 14, color: '#00b0ff', fontWeight: "400", fontFamily: 'Helvetica-Bold'}}>
+               {strftime('%A')}
+            </Text>
+          </View>
+          <Text style={{ height: 29, paddingTop: 2, fontSize: 12, color: '#00b0ff', fontWeight: "200", fontFamily: 'AppleSDGothicNeo-Thin'}}>
+            this will be text of the message this will be text of the message this will be text of the message this will be text of the message this will be text of the message this will be text of the message this will be text of the message this will be text of the message v this will be text of the message this will be text of the message this will be text of the message...
+          </Text>
+        </View>
+        <View style={{}}>
+          <Text style={{fontSize: 17, color: 'green'}}>
+            80%
+          </Text>
+        </View>
         </TouchableOpacity>
+
         }
       />
 
-      <View style={{flex: 1, height: 5}}>
-       <NavMenu navigator={this.props.navigator}/>
-      </View>
      </View>
    );
  }
@@ -121,11 +142,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e0e0e0',
+    backgroundColor: 'white',
 
   },
   listContainer: {
-    top: 10,
     flex: 1,
   },
   listItem: {
@@ -133,11 +153,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e0e0e0',
+    backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderColor: '#757575',
-    padding: 4,
-    height: 50,
+    borderColor: '#e0e0e0',
+    height: 70,
     padding: 5,
   },
   listIcon: {
@@ -147,5 +166,11 @@ const styles = StyleSheet.create({
     color: '#00b0ff',
     paddingLeft: 15,
     paddingRight: 15,
+  },
+  userPic: {
+    borderRadius: 15,
+    height: 35,
+    width: 35,
+    resizeMode: 'stretch'
   }
 });

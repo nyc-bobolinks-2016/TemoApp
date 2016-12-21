@@ -55,12 +55,12 @@ export default class NavMenu extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute', left: 0, right: 0, bottom: 50,
+    position: 'absolute', left: 0, right: 0, top: 30,
     height: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#eeeeee',
   },
   welcome: {
     fontSize: 40,

@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   Dimensions,
   Modal,
+  Image
 } from 'react-native';
 
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -161,9 +162,21 @@ export default class Chat extends Component {
 
   renderRow(rowData, sectionID, rowID){
       if(messageCheck.includes(rowData[0])){
-    return <Text style={styles.rightContain}>{rowData}</Text>
+    return <View style={{flexDirection: 'row'}}>
+      <View style={{ marginRight: 5, marginBottom: 10, height: 25}}>
+        <Image source={require('../../images/bg.jpg')} style={styles.userPic}>
+        </Image>
+      </View>
+      <Text style={styles.rightContain}>{rowData}</Text>
+    </View>
       } else {
-     return <Text style={styles.leftContain}>{rowData}</Text>
+     return <View style={{flexDirection: 'row'}}>
+         <Text style={styles.leftContain}>{rowData}</Text>
+         <View style={{ marginRight: 5, marginBottom: 10, height: 25}}>
+           <Image source={require('../../images/bg.jpg')} style={styles.userPic}>
+           </Image>
+         </View>
+       </View>
      }
   }
 
@@ -173,46 +186,45 @@ export default class Chat extends Component {
  render() {
    const data = this.state.dataSource.cloneWithRows(this.state.messageList || [])
    return (
-     <View>
-     <View style={styles.outerContainer}>
-        <TouchableOpacity
-        underlayColor={'#4e4273'}
-        onPress={this.onBackPress.bind(this)}
-        style={{marginLeft: 15}}
-        >
-        <Text style={{color: "#000", padding: 20}}>&lt; Back</Text>
-        </TouchableOpacity>
-        <View style={{ height: 550}}>
-          <Text style={{textAlign: 'center'}}>Chat</Text>
-            <ListView
-              style={{backgroundColor: '#e3f2fd'}}
-              enableEmptySections
-              dataSource={data}
-              renderRow={this.renderRow}
-          />
-          </View>
-            <View style={{backgroundColor: this.state.color , width: this.state.width*4, height: 5}}>
-          </View>
+     <View style={{flex: 1}}>
+       <View style={styles.outerContainer}>
+          <TouchableOpacity
+          underlayColor={'#4e4273'}
+          onPress={this.onBackPress.bind(this)}
+          style={{marginLeft: 15}}
+          >
+          <Text style={{color: "#000", top: 20}}>&lt; Back</Text>
+          </TouchableOpacity>
+          <View style={{ flex: 1, top: 5}}>
+            <Text style={{textAlign: 'center'}}>Contact Name</Text>
+              <ListView
+                style={{backgroundColor: 'white'}}
+                enableEmptySections
+                dataSource={data}
+                renderRow={this.renderRow}
+            />
+            </View>
+              <View style={{backgroundColor: this.state.color , width: this.state.width*4, height: 5}}>
+            </View>
 
-
-          <View style={{flex: 1, flexDirection: 'row', height: 300}}>
-           <TextInput
-             style={styles.textInput}
-             value={this.state.message}
-             onKeyPress={this.handleKey.bind(this)}
-             onChangeText={this.handleChange.bind(this)}
-           />
-         <View>
-           <TouchableOpacity
-             style={{borderWidth: 1, borderRadius: 5, width: 70, height: 44, backgroundColor: '#00b0ff'}}
-               onPress={() => this.onSendPress()}
-            >
-            <Text style={{color: 'white', fontSize: 33, fontWeight: "100", fontFamily: 'AppleSDGothicNeo-Thin'}}>Send</Text>
-           </TouchableOpacity>
-         </View>
-        </View>
-     </View>
-     <KeyboardSpacer/>
+            </View>
+            <View style={{bottom: 0, flexDirection: 'row'}}>
+             <TextInput
+               style={styles.textInput}
+               value={this.state.message}
+               onKeyPress={this.handleKey.bind(this)}
+               onChangeText={this.handleChange.bind(this)}
+             />
+           <View>
+             <TouchableOpacity
+               style={{ borderWidth: 1, borderRadius: 5, width: 70, height: 44, backgroundColor: '#00b0ff'}}
+                 onPress={() => this.onSendPress()}
+              >
+              <Text style={{color: 'white', fontSize: 33, fontWeight: "100", fontFamily: 'AppleSDGothicNeo-Thin'}}>Send</Text>
+             </TouchableOpacity>
+           </View>
+          </View>
+       <KeyboardSpacer/>
      </View>
    );
  }
@@ -224,12 +236,7 @@ export default class Chat extends Component {
 
 const styles = StyleSheet.create({
   outerContainer: {
-    height: 200,
-  },
-  container: {
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 20,
+    flex: 1,
   },
   textInput: {
     borderRadius: 5,
@@ -239,37 +246,30 @@ const styles = StyleSheet.create({
     height: 44,
     paddingHorizontal: 10,
   },
-  segment: {
-    marginBottom: 10,
-  },
-  sendLabel: {
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderRadius: 10,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 30,
-    left: 10,
-  },
   rightContain: {
     flex: 0,
     justifyContent: 'flex-end',
-    borderColor: '#e0e0e0',
+    backgroundColor: '#e0e0e0',
     flexDirection: 'column',
-    borderWidth:4,
-    borderRadius: 10,
+    borderWidth: 0,
+    borderRadius: 5,
     padding: 5,
     margin: 3,
   },
   leftContain: {
     flex: 0,
-    borderColor: '#64b5f6',
+    backgroundColor: '#64b5f6',
     justifyContent: 'flex-end',
     flexDirection: 'column',
-    borderWidth:4,
-    borderRadius: 10,
+    borderWidth: 0,
+    borderRadius: 5,
     padding: 5,
     margin: 3,
   },
+  userPic: {
+    borderRadius: 15,
+    height: 35,
+    width: 35,
+    resizeMode: 'stretch'
+  }
 });

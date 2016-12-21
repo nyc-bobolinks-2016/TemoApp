@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 240,
     height: 40,
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: '#757575',
     marginLeft: 67,
     marginBottom: 3,

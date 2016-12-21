@@ -81,7 +81,11 @@ export default class Contacts extends Component {
     const dataSource = this.state.dataSource.cloneWithRows(this.state.contactList || [])
     return (
       <View style={styles.listContainer}>
+        <View style={{}}>
+         <NavMenu navigator={this.props.navigator}/>
+        </View>
         <ListView
+          style={{ top: 62 }}
           enableEmptySections
           dataSource={dataSource}
           renderRow={(rowData, sectionID, rowID) => (
@@ -89,15 +93,12 @@ export default class Contacts extends Component {
                 style={styles.listItem}
                 onPress={() => this.handleContactChoice(rowData, rowData.givenName)}
               >
-                <Text style={{flex: 1, fontSize: 30, color: '#00b0ff', fontWeight: "200", fontFamily: 'AppleSDGothicNeo-Thin'}}>
-                  {rowData.givenName}
-                </Text>
+                  <Text style={{ flex: 1, fontSize: 20, color: '#00b0ff', fontWeight: "400", fontFamily: 'Helvetica-Bold'}}>
+                    {rowData.givenName} {rowData.familyName}
+                  </Text>
               </TouchableOpacity>
           )}
         />
-      <View style={{flex: 1, height: 20}}>
-       <NavMenu navigator={this.props.navigator}/>
-      </View>
       </View>
    );
   }
@@ -166,19 +167,18 @@ export default class Contacts extends Component {
 
   const styles = StyleSheet.create({
     listContainer: {
-      top: 10,
-      flex: 11,
+      flex: 1,
       justifyContent: 'center',
-      backgroundColor: '#e0e0e0',
+      backgroundColor: '#eeeeee',
     },
     listItem: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: '#e0e0e0',
+      backgroundColor: 'white',
       borderBottomWidth: 0.5,
-      borderColor: '#757575',
+      borderColor: '#e0e0e0',
       padding: 5,
       height: 50,
       padding: 5,
