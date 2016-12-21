@@ -102,26 +102,26 @@ export default class Conversations extends Component {
           style={styles.listItem}
           onPress={() => this.onConversationPress(rowData[0], rowData[1][0].username)}
         >
-        <View style={{ marginRight: 5, marginBottom: 10, height: 25}}>
+        <View style={{ marginRight: 5, marginBottom: 10, height: 35}}>
           <Image source={require('../../images/bg.jpg')} style={styles.userPic}>
 
           </Image>
         </View>
         <View style={{flexDirection: 'column', flex: 1, paddingBottom: 5}}>
           <View style={{ flexDirection: 'row' }}>
-            <Text style={{ flex: 2, fontSize: 14, color: '#00b0ff', fontWeight: "600", fontFamily: 'Helvetica-Bold'}}>
+            <Text style={{ flex: 2, fontSize: 17, color: '#00b0ff', fontWeight: "600", fontFamily: 'Helvetica-Bold'}}>
               {rowData[1][0].username}
             </Text>
-            <Text style={{ flex: 1, fontSize: 14, color: '#00b0ff', fontWeight: "400", fontFamily: 'Helvetica-Bold'}}>
+            <Text style={{ flex: 1, fontSize: 17, color: '#00b0ff', fontWeight: "400", fontFamily: 'Helvetica-Bold'}}>
                {strftime('%A')}
             </Text>
           </View>
-          <Text style={{ height: 29, paddingTop: 2, fontSize: 12, color: '#00b0ff', fontWeight: "200", fontFamily: 'AppleSDGothicNeo-Thin'}}>
+          <Text style={{ height: 35, paddingTop: 2, fontSize: 15, color: '#212121', fontWeight: "200", fontFamily: 'AppleSDGothicNeo-Thin'}}>
             this will be text of the message this will be text of the message this will be text of the message this will be text of the message this will be text of the message this will be text of the message this will be text of the message this will be text of the message v this will be text of the message this will be text of the message this will be text of the message...
           </Text>
         </View>
         <View style={{}}>
-          <Text style={{fontSize: 17, color: 'green'}}>
+          <Text style={{fontSize: 20, color: 'green'}}>
             80%
           </Text>
         </View>
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderColor: '#e0e0e0',
-    height: 70,
+    height: 90,
     padding: 5,
   },
   listIcon: {
@@ -168,9 +168,9 @@ const styles = StyleSheet.create({
     paddingRight: 15,
   },
   userPic: {
-    borderRadius: 15,
-    height: 35,
-    width: 35,
+    borderRadius: 20,
+    height: 45,
+    width: 45,
     resizeMode: 'stretch'
   }
 });

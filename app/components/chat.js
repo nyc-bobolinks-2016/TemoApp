@@ -162,21 +162,21 @@ export default class Chat extends Component {
 
   renderRow(rowData, sectionID, rowID){
       if(messageCheck.includes(rowData[0])){
-    return <View style={{flexDirection: 'row'}}>
-      <View style={{ marginRight: 5, marginBottom: 10, height: 25}}>
-        <Image source={require('../../images/bg.jpg')} style={styles.userPic}>
-        </Image>
-      </View>
-      <Text style={styles.rightContain}>{rowData}</Text>
-    </View>
+        return <View style={{justifyContent: 'flex-end',  flexDirection: 'row', marginBottom: 10, marginTop: 10,}}>
+            <Text style={styles.leftContain}>{rowData}</Text>
+            <View style={{right: 0, marginRight: 5, margintop: 5, height: 25}}>
+              <Image source={require('../../images/bg.jpg')} style={styles.userPic}>
+              </Image>
+            </View>
+          </View>
       } else {
-     return <View style={{flexDirection: 'row'}}>
-         <Text style={styles.leftContain}>{rowData}</Text>
-         <View style={{ marginRight: 5, marginBottom: 10, height: 25}}>
-           <Image source={require('../../images/bg.jpg')} style={styles.userPic}>
-           </Image>
-         </View>
-       </View>
+        return <View style={{ flexDirection: 'row', marginBottom: 10, marginTop: 10,}}>
+          <View style={{ marginLeft: 5, marginTop: 5, height: 25}}>
+            <Image source={require('../../images/bg.jpg')} style={styles.userPic}>
+            </Image>
+          </View>
+          <Text style={styles.rightContain}>{rowData}</Text>
+        </View>
      }
   }
 
@@ -198,7 +198,7 @@ export default class Chat extends Component {
           <View style={{ flex: 1, top: 5}}>
             <Text style={{textAlign: 'center'}}>Contact Name</Text>
               <ListView
-                style={{backgroundColor: 'white'}}
+                style={{flex: 1, backgroundColor: 'white'}}
                 enableEmptySections
                 dataSource={data}
                 renderRow={this.renderRow}
@@ -217,10 +217,10 @@ export default class Chat extends Component {
              />
            <View>
              <TouchableOpacity
-               style={{ borderWidth: 1, borderRadius: 5, width: 70, height: 44, backgroundColor: '#00b0ff'}}
+               style={{ overflow: 'hidden', borderWidth: 1, borderColor: '#e0e0e0', borderRadius: 5, width: 70, height: 44, backgroundColor: '#00b0ff'}}
                  onPress={() => this.onSendPress()}
               >
-              <Text style={{color: 'white', fontSize: 33, fontWeight: "100", fontFamily: 'AppleSDGothicNeo-Thin'}}>Send</Text>
+              <Text style={{color: '#e0e0e0', fontSize: 33, fontWeight: "200", fontFamily: 'AppleSDGothicNeo-Thin'}}>Send</Text>
              </TouchableOpacity>
            </View>
           </View>
@@ -239,37 +239,41 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textInput: {
-    borderRadius: 5,
+    borderRadius: 20,
     backgroundColor: 'white',
     width: 305,
     borderWidth: 1,
+    borderColor: '#e0e0e0',
     height: 44,
     paddingHorizontal: 10,
   },
   rightContain: {
-    flex: 0,
-    justifyContent: 'flex-end',
+    padding: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    overflow: 'hidden',
     backgroundColor: '#e0e0e0',
     flexDirection: 'column',
     borderWidth: 0,
-    borderRadius: 5,
-    padding: 5,
-    margin: 3,
+    borderRadius: 15,
+    fontSize: 17
   },
   leftContain: {
-    flex: 0,
+    padding: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    overflow: 'hidden',
+    right: 0,
     backgroundColor: '#64b5f6',
-    justifyContent: 'flex-end',
     flexDirection: 'column',
     borderWidth: 0,
-    borderRadius: 5,
-    padding: 5,
-    margin: 3,
+    borderRadius: 15,
+    fontSize: 17
   },
   userPic: {
-    borderRadius: 15,
-    height: 35,
-    width: 35,
+    borderRadius: 20,
+    height: 40,
+    width: 40,
     resizeMode: 'stretch'
   }
 });
