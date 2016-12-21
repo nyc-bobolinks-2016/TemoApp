@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 30,
     color: '#00b0ff',
-    fontWeight: "100",
+    fontWeight: "200",
     fontFamily: 'AppleSDGothicNeo-Thin',
     margin: 5,
 
