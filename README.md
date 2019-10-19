@@ -9,11 +9,9 @@ First, Clone repository
 
 1 `CD TemoApp.`
 
-2 `rm -rf node_modules`
+2 `npm install`
 
-3 `npm install`
-
-4 `npm start`
+3 `npm start`
 
 
 <img src="/images/login.png" alt="alt text" width="400" height="700">
